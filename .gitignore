@@ -1,0 +1,25 @@
+# Credenciais e segredos
+.env
+*.env
+secrets.json
+config.local.js
+token.txt
+
+# Documentos pessoais
+*.pdf
+
+# Dependências
+node_modules/
+vendor/
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Guias locais
+githubGuia.md
+
+# Build
+dist/
+build/
+.cache/
