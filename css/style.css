@@ -207,6 +207,27 @@ textarea.code-input.err{border-color:var(--red)}
 .topic-pill[data-topic="Revisão"] .tp-dot { background: var(--purple); }
 .topic-pill[data-topic="Revisão"] .tp-name { color: var(--purple); }
 
+
+/* PROVA SELECTOR */
+.prova-selector{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:0}
+.prova-card{border:2px solid var(--border);border-radius:8px;padding:16px;cursor:pointer;transition:all .15s;background:var(--surface);text-align:center;position:relative}
+.prova-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.prova-card.active-prova{transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.prova-card.p1-card.active-prova{border-color:#f97583;background:rgba(249,117,131,.07)}
+.prova-card.p2-card.active-prova{border-color:#4f8aff;background:rgba(79,138,255,.07)}
+.prova-card.pf-card.active-prova{border-color:#b97aff;background:rgba(185,122,255,.07)}
+.prova-icon{font-size:24px;margin-bottom:8px}
+.prova-name{font-size:15px;font-weight:800;letter-spacing:-.01em;margin-bottom:4px}
+.prova-card.p1-card .prova-name{color:#f97583}
+.prova-card.p2-card .prova-name{color:#4f8aff}
+.prova-card.pf-card .prova-name{color:#b97aff}
+.prova-desc{font-size:11px;color:var(--text2);line-height:1.5}
+.prova-cnt{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);margin-top:6px}
+.prova-check{position:absolute;top:8px;right:8px;width:18px;height:18px;border-radius:50%;display:none;align-items:center;justify-content:center;font-size:10px;font-weight:700}
+.prova-card.p1-card.active-prova .prova-check{display:flex;background:#f97583;color:#fff}
+.prova-card.p2-card.active-prova .prova-check{display:flex;background:#4f8aff;color:#000}
+.prova-card.pf-card.active-prova .prova-check{display:flex;background:#b97aff;color:#fff}
+
 @media(max-width:600px){
   header{padding:0 14px}main{padding:24px 14px 80px}
   .diff-grid{grid-template-columns:1fr;gap:7px}

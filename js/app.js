@@ -5,6 +5,7 @@ const TOPICS_LIST = [...new Set(BANK.map(q => q.topic))];
 const countD = d => BANK.filter(q => q.diff === d).length;
 const countT = t => BANK.filter(q => q.topic === t).length;
 
+let selProva = 'p2'; // 'p1' | 'p2' | 'pf'
 let selDiffs = new Set(['easy','medium','hard']);
 let selTopics = new Set(TOPICS_LIST);
 let selTypes = new Set(['mc','tf','code']);
@@ -21,9 +22,13 @@ function init() {
   document.getElementById('cnt-mc').textContent   = countTy('mc')   + ' questões';
   document.getElementById('cnt-tf').textContent   = countTy('tf')   + ' questões';
   document.getElementById('cnt-code').textContent = countTy('code') + ' questões';
-  const grid = document.getElementById('topics-grid');
-  grid.innerHTML = '';
-  TOPICS_LIST.forEach(t => {
+  // Prova counts
+  document.getElementById('cnt-p1').textContent = BANK.filter(q=>q.prova==='p1').length + ' questões';
+  document.getElementById('cnt-p2').textContent = BANK.filter(q=>q.prova==='p2').length + ' questões';
+  document.getElementById('cnt-pf').textContent = BANK.length + ' questões';
+  buildTopicsGrid();
+  // dummy loop suppressor (buildTopicsGrid handles the grid now)
+  if (false) { TOPICS_LIST.forEach(t => {
     const el = document.createElement('div');
     el.className = 'topic-pill on';
     el.dataset.topic = t;
@@ -34,6 +39,44 @@ function init() {
         <span class="tp-dot"></span>
         <span class="tp-name">${isReview ? '★ ' : ''}${t}</span>
         <span class="tp-count">${countT(t)}</span>
+      </div>
+      <div class="tp-summary">${summary}</div>`;
+    el.onclick = () => toggleTopic(t, el);
+    grid.appendChild(el);
+  }); } // end dummy if
+}
+
+function selectProva(p, card) {
+  selProva = p;
+  document.querySelectorAll('.prova-card').forEach(c => c.classList.remove('active-prova'));
+  card.classList.add('active-prova');
+  // Rebuild topics grid for the selected prova
+  buildTopicsGrid();
+}
+
+function provaFilter(q) {
+  if (selProva === 'pf') return true;
+  return q.prova === selProva;
+}
+
+function buildTopicsGrid() {
+  const topicsForProva = [...new Set(BANK.filter(q => provaFilter(q)).map(q => q.topic))];
+  // Reset selTopics to all available for this prova
+  selTopics = new Set(topicsForProva);
+  const grid = document.getElementById('topics-grid');
+  grid.innerHTML = '';
+  topicsForProva.forEach(t => {
+    const n = BANK.filter(q => q.topic === t && provaFilter(q)).length;
+    const el = document.createElement('div');
+    el.className = 'topic-pill on';
+    el.dataset.topic = t;
+    const isReview = t === 'Revisão';
+    const summary = TOPIC_META[t] || '';
+    el.innerHTML = `
+      <div class="tp-head">
+        <span class="tp-dot"></span>
+        <span class="tp-name">${isReview ? '★ ' : ''}${t}</span>
+        <span class="tp-count">${n}</span>
       </div>
       <div class="tp-summary">${summary}</div>`;
     el.onclick = () => toggleTopic(t, el);
@@ -58,7 +101,7 @@ function toggleTopic(t, el) {
 
 // ── START ──
 function startQuiz() {
-  const pool = BANK.filter(q => selDiffs.has(q.diff) && selTopics.has(q.topic) && selTypes.has(q.type));
+  const pool = BANK.filter(q => provaFilter(q) && selDiffs.has(q.diff) && selTopics.has(q.topic) && selTypes.has(q.type));
   // Intercala por dificuldade: easy→medium→hard ciclicamente
   const byD = { easy: shuffle(pool.filter(q=>q.diff==='easy')), medium: shuffle(pool.filter(q=>q.diff==='medium')), hard: shuffle(pool.filter(q=>q.diff==='hard')) };
   const order = ['easy','medium','hard'].filter(d => selDiffs.has(d) && byD[d].length);

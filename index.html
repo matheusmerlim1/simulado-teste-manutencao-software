@@ -21,6 +21,31 @@
     <p class="home-sub">Questões de múltipla escolha, V/F e escrita de código — baseadas nos materiais e provas do curso.</p>
   </div>
 
+  <div class="sec-title">Prova</div>
+  <div class="prova-selector">
+    <div class="prova-card p1-card" onclick="selectProva('p1',this)">
+      <div class="prova-check">✓</div>
+      <div class="prova-icon">📘</div>
+      <div class="prova-name">P1</div>
+      <div class="prova-desc">Fundamentos do Teste de Software — conceitos, defeitos, qualidade, princípios, níveis e tipos.</div>
+      <div class="prova-cnt" id="cnt-p1">— questões</div>
+    </div>
+    <div class="prova-card p2-card active-prova" onclick="selectProva('p2',this)">
+      <div class="prova-check">✓</div>
+      <div class="prova-icon">📗</div>
+      <div class="prova-name">P2</div>
+      <div class="prova-desc">JUnit 5 e Katalon — anotações, asserções, parametrizados, suítes, @Timeout, caixa preta.</div>
+      <div class="prova-cnt" id="cnt-p2">— questões</div>
+    </div>
+    <div class="prova-card pf-card" onclick="selectProva('pf',this)">
+      <div class="prova-check">✓</div>
+      <div class="prova-icon">📙</div>
+      <div class="prova-name">PF</div>
+      <div class="prova-desc">Prova Final — todas as questões de P1 e P2 combinadas.</div>
+      <div class="prova-cnt" id="cnt-pf">— questões</div>
+    </div>
+  </div>
+
   <div class="sec-title">Dificuldade</div>
   <div class="diff-grid">
     <div class="diff-card easy active" onclick="toggleDiff('easy',this)">
