@@ -1523,4 +1523,145 @@ answer:2,
 exp:"Teste de Regressão: após qualquer modificação, reexecuta todos os casos de teste para verificar se a mudança introduziu novos defeitos. A correção do bug de frete introduziu defeitos no pagamento — exatamente o cenário que a regressão previne."}
 
 
+// ══════════════════ PROVA FINAL (PF) ══════════════════
+// Questões baseadas na Prova Final 2025/2 (Prof. Octavio Vieira de Aguiar)
+
+,{prova:"pf",topic:"Modelo V e Ciclo de Vida",diff:"easy",type:"mc",
+text:"[1,0] Proposto por Rook (1986), o Modelo V é um modelo de desenvolvimento que integra fortemente a testagem ao processo. De acordo com esse modelo, quando uma parte do software está em fase de ANÁLISE DE REQUISITOS, o que deve estar ocorrendo em relação aos testes?",
+options:["Os testes de aceitação desta parte devem estar sendo planejados","Os testes de unidade desta parte devem estar sendo executados","Os testes de integração desta parte devem estar sendo executados","Os testes de sistema desta parte devem estar sendo executados"],
+answer:0,
+exp:"No Modelo V, cada fase de desenvolvimento (lado esquerdo) é espelhada por um nível de teste (lado direito): a análise de requisitos corresponde ao PLANEJAMENTO dos testes de aceitação. A execução só ocorre depois, na subida do V."},
+
+{prova:"pf",topic:"Modelo V e Ciclo de Vida",diff:"medium",type:"mc",
+text:"[1,0] No Modelo V, durante a fase de PROJETO DA ARQUITETURA (projeto de alto nível) de uma parte do software, o que deve estar ocorrendo em relação aos testes dessa parte?",
+options:["Os testes de integração desta parte devem estar sendo planejados","Os testes de unidade desta parte devem estar sendo executados","Os testes de aceitação desta parte devem estar sendo executados","Os testes de sistema desta parte devem estar sendo executados"],
+answer:0,
+exp:"No Modelo V, o projeto da arquitetura (alto nível) espelha o nível de teste de integração — portanto, nessa fase os testes de integração estão sendo PLANEJADOS. A execução ocorre na subida do V, após a codificação."},
+
+{prova:"pf",topic:"Modelo V e Ciclo de Vida",diff:"medium",type:"tf",
+text:"[1,6] Assinale V para as alternativas verdadeiras e F para as falsas, em relação ao Modelo V.",
+statements:[
+{text:"O Modelo V integra fortemente as atividades de teste ao processo de desenvolvimento.",answer:true},
+{text:"Cada fase de desenvolvimento à esquerda do V está associada a um nível de teste à direita.",answer:true},
+{text:"No Modelo V, todos os testes são planejados e executados somente após o término da codificação.",answer:false},
+{text:"A fase de análise de requisitos está associada ao nível de teste de aceitação.",answer:true}
+],
+exp:"O diferencial do Modelo V é planejar cada nível de teste JUNTO com a fase de desenvolvimento correspondente (lado esquerdo), antecipando o planejamento. A execução é que ocorre depois, na subida do V."},
+
+{prova:"pf",topic:"Padrão ISO/IEC 25010",diff:"easy",type:"mc",
+text:"[1,0] Segundo a ISO/IEC 25010, a característica 'Coexistência' — capacidade de um produto operar eficientemente compartilhando um ambiente comum com outros produtos — pertence a qual característica de qualidade?",
+options:["Compatibilidade","Usabilidade","Portabilidade","Manutenibilidade"],
+answer:0,
+exp:"Na ISO/IEC 25010, a Compatibilidade reúne as subcaracterísticas Coexistência e Interoperabilidade. Coexistência = operar bem compartilhando recursos com outros produtos."},
+
+{prova:"pf",topic:"Qualidade de Software",diff:"medium",type:"tf",
+text:"[2,0] Assinale V para as alternativas verdadeiras e F para as falsas, em relação a fundamentos de teste e qualidade de software.",
+statements:[
+{text:"Segundo a ISO/IEC 25010, a Coexistência é uma das características do atributo de qualidade Compatibilidade.",answer:true},
+{text:"O teste de resiliência é um tipo de teste funcional de software.",answer:false},
+{text:"O intuito geral de um teste é refutar a ideia de que o produto está correto.",answer:true},
+{text:"A análise de despejo de memória (memory dump) é um método de depuração por força bruta.",answer:true}
+],
+exp:"Resiliência é teste NÃO funcional (avalia recuperação a falhas, não a regra de negócio). Testar é tentar refutar a correção do software, revelando defeitos (visão de Myers). Memory dump é depuração por força bruta. Coexistência ∈ Compatibilidade (ISO 25010)."},
+
+{prova:"pf",topic:"Qualidade de Software",diff:"medium",type:"mc",
+text:"[1,0] Um gerente afirma: 'Após esta bateria de testes sem falhas, está provado que o software não tem defeitos.' Qual visão sobre o objetivo dos testes contradiz CORRETAMENTE essa afirmação?",
+options:["O objetivo do teste é provar a ausência total de defeitos","O objetivo do teste é refutar a hipótese de que o software está correto, revelando defeitos — testes não provam ausência de defeitos","O objetivo do teste é garantir 100% de cobertura de código","O objetivo do teste é substituir a fase de depuração"],
+answer:1,
+exp:"Testar é tentar refutar a correção do software. A ausência de falhas em uma bateria de testes não prova ausência de defeitos — apenas que aqueles casos passaram (princípio de Dijkstra/Myers)."},
+
+{prova:"pf",topic:"Depuração",diff:"easy",type:"mc",
+text:"[1,0] Durante um processo conjunto de teste e depuração, uma vez que as falhas são encontradas, a depuração é realizada, as causas são descobertas e corrigidas. Qual é o passo a ser realizado IMEDIATAMENTE a seguir?",
+options:["Encerrar o processo de teste","Executar testes de regressão","Realizar testes exploratórios completamente distintos","Expandir a depuração atual para módulos não relacionados"],
+answer:1,
+exp:"Após corrigir uma falha, executa-se o teste de regressão para garantir que a correção não introduziu novos defeitos e que o comportamento anterior continua íntegro. Só então o ciclo prossegue."},
+
+{prova:"pf",topic:"Depuração",diff:"medium",type:"mc",
+text:"[1,0] A análise de despejo de memória (memory dump) é classificada como um método de depuração de qual categoria?",
+options:["Força bruta","Indução","Dedução","Eliminação de causas (backtracking)"],
+answer:0,
+exp:"A análise de memory dump examina grandes volumes de dados brutos da memória sem uma hipótese guiada — por isso é considerada depuração por FORÇA BRUTA, geralmente o último recurso."},
+
+{prova:"pf",topic:"Asserções",diff:"medium",type:"mc",
+text:"[1,0] Em um teste que recebe uma equação VÁLIDA e precisa garantir que o método validarEquacaoLinear NÃO lança nenhuma exceção, qual asserção do JUnit 5 deve ser utilizada?",
+options:["assertThrows(DataFormatException.class, () -> fv.validarEquacaoLinear(eq))","assertDoesNotThrow(() -> fv.validarEquacaoLinear(eq))","assertNull(fv.validarEquacaoLinear(eq))","assertFalse(fv.validarEquacaoLinear(eq))"],
+answer:1,
+exp:"assertDoesNotThrow verifica que o bloco executa SEM lançar exceção — ideal para entradas válidas. Para a entrada inválida, usa-se assertThrows(DataFormatException.class, ...)."},
+
+{prova:"pf",topic:"Testes Parametrizados",diff:"medium",type:"code",
+text:"[2,0] Considere a classe FormatoValidador com o método validarEquacaoLinear(String eq) que lança DataFormatException para equações inválidas. Implemente um teste parametrizado JUnit 5 chamado testValidarEquacaoValida que, para cada equação VÁLIDA fornecida por argumentos simples (\"0.87x+0=0\", \"(45)x+(-6.23)=0\", \"0.5x+(-0.23)=0\", \"(1.2)x+100=0\"), verifica que NENHUMA exceção é lançada. Use assertDoesNotThrow. Considere que existe um atributo 'fv' já inicializado.",
+answer:`@ParameterizedTest
+@ValueSource(strings = {"0.87x+0=0", "(45)x+(-6.23)=0", "0.5x+(-0.23)=0", "(1.2)x+100=0"})
+public void testValidarEquacaoValida(String eq) {
+    assertDoesNotThrow(() -> fv.validarEquacaoLinear(eq));
+}`,
+keywords:["@ParameterizedTest","@ValueSource","testValidarEquacaoValida","assertDoesNotThrow","validarEquacaoLinear"],
+exp:"@ParameterizedTest + @ValueSource(strings = {...}) injeta cada string como argumento simples. assertDoesNotThrow garante que equações válidas não disparam exceção."},
+
+{prova:"pf",topic:"Testes Parametrizados",diff:"hard",type:"code",
+text:"[4,0] Considere a classe FormatoValidador, construída com um ValidadorTextual (new FormatoValidador(new ValidadorTextual())), cujo método validarEquacaoLinear(String eq) lança DataFormatException para equações inválidas. Desenvolva o caso de teste JUnit 5 FormatoValidadorTest observando: (A) antes de todos os testes, instanciar UM único objeto FormatoValidador reutilizado por todos; (B) testValidarEquacaoValida, parametrizado por argumentos simples, verifica que equações válidas (\"0.87x+0=0\", \"(45)x+(-6.23)=0\", \"0.5x+(-0.23)=0\", \"(1.2)x+100=0\") NÃO lançam exceção; (C) testValidarEquacaoInvalida, parametrizado, verifica que equações inválidas (\"x+23.2=0\", \"5)x+6.23=0\", \"0.5x+-0.23=0\", \"(1.2)x+100\") lançam DataFormatException.",
+answer:`public class FormatoValidadorTest {
+    private static FormatoValidador fv;
+
+    @BeforeAll
+    public static void setUpAll() {
+        fv = new FormatoValidador(new ValidadorTextual());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"0.87x+0=0", "(45)x+(-6.23)=0", "0.5x+(-0.23)=0", "(1.2)x+100=0"})
+    public void testValidarEquacaoValida(String eq) {
+        assertDoesNotThrow(() -> fv.validarEquacaoLinear(eq));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"x+23.2=0", "5)x+6.23=0", "0.5x+-0.23=0", "(1.2)x+100"})
+    public void testValidarEquacaoInvalida(String eq) {
+        assertThrows(DataFormatException.class, () -> fv.validarEquacaoLinear(eq));
+    }
+}`,
+keywords:["FormatoValidadorTest","@BeforeAll","static","@ParameterizedTest","@ValueSource","assertDoesNotThrow","assertThrows","DataFormatException","validarEquacaoLinear"],
+exp:"Pontos-chave: (A) @BeforeAll em método ESTÁTICO instancia o FormatoValidador uma única vez (compartilhado); (B) válidas → assertDoesNotThrow; (C) inválidas → assertThrows(DataFormatException.class, ...). @ValueSource fornece os argumentos simples a cada @ParameterizedTest."},
+
+{prova:"pf",topic:"Katalon",diff:"easy",type:"mc",
+text:"[1,0] Em um script Katalon, a especificação exige que, ao término do teste, o navegador seja fechado APENAS SE o teste tiver sido malsucedido (falha em verificação ou erro inesperado). Qual anotação deve conter o WebUI.closeBrowser()?",
+options:["@TearDown","@TearDownIfError","@Setup","@AfterEach"],
+answer:1,
+exp:"@TearDownIfError executa SOMENTE quando o teste falha — exatamente o pedido. @TearDown executaria apenas em caso de sucesso, invertendo a especificação."},
+
+{prova:"pf",topic:"Katalon",diff:"medium",type:"code",
+text:"[2,0] Implemente o método de finalização de um script Katalon que fecha o navegador APENAS quando o teste for malsucedido (falha ou erro inesperado).",
+answer:`@TearDownIfError
+def tearDown() {
+    WebUI.closeBrowser()
+}`,
+keywords:["@TearDownIfError","closeBrowser"],
+exp:"'Fechar apenas se malsucedido' → @TearDownIfError (executa só em falha). Não confundir com @TearDown, que executa apenas em sucesso."},
+
+{prova:"pf",topic:"Katalon",diff:"hard",type:"code",
+text:"[2,0] Considere um verificador de números primos cuja interface possui o campo de entrada 'Object InpNumero' e o campo de saída 'Object InpEPrimo' (informa se o número é primo). Desenvolva um script de caso de teste em Katalon que: abra o navegador em http://localhost/numerosprimos.html antes do teste; para cada item da tabela, atribua o número e verifique se a saída corresponde ao resultado esperado — 829→Sim, -93→Não, 122→Não; e, ao término, feche o navegador APENAS se o teste tiver sido malsucedido. Considere que o número de itens pode ser muito maior que o apresentado.",
+answer:`@Setup
+def setUp() {
+    WebUI.openBrowser('http://localhost/numerosprimos.html')
+}
+
+@TearDownIfError
+def tearDown() {
+    WebUI.closeBrowser()
+}
+
+def dados = [
+    [829, 'Sim'],
+    [-93, 'Não'],
+    [122, 'Não']
+]
+
+for (linha in dados) {
+    WebUI.setText(findTestObject('Object InpNumero'), String.valueOf(linha[0]))
+    WebUI.verifyElementAttributeValue(findTestObject('Object InpEPrimo'), 'value', linha[1], 0)
+}`,
+keywords:["@Setup","openBrowser","numerosprimos","@TearDownIfError","closeBrowser","for","setText","InpNumero","verify","InpEPrimo"],
+exp:"Pontos-chave: @Setup abre o navegador; @TearDownIfError (NÃO @TearDown) fecha apenas em falha, conforme a especificação; o laço sobre a lista de dados torna o teste escalável; setText preenche o número e verifyElementAttributeValue confere o valor do campo de saída (disabled). A inversão @TearDown × @TearDownIfError é a pegadinha clássica."}
+
+
 ]; // fim BANK
