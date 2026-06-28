@@ -1663,5 +1663,325 @@ for (linha in dados) {
 keywords:["@Setup","openBrowser","numerosprimos","@TearDownIfError","closeBrowser","for","setText","InpNumero","verify","InpEPrimo"],
 exp:"Pontos-chave: @Setup abre o navegador; @TearDownIfError (NÃO @TearDown) fecha apenas em falha, conforme a especificação; o laço sobre a lista de dados torna o teste escalável; setText preenche o número e verifyElementAttributeValue confere o valor do campo de saída (disabled). A inversão @TearDown × @TearDownIfError é a pegadinha clássica."}
 
+// ══════════════════ PROVA FINAL (PF) — AMPLIAÇÃO ══════════════════
+// Lote adicional de questões baseadas na Prova Final 2025/2
+
+// ── Tema 1: Modelo V e Ciclo de Vida ──
+,{prova:"pf",topic:"Modelo V e Ciclo de Vida",diff:"easy",type:"mc",
+text:"[1,0] No Modelo V, a fase de PROJETO DETALHADO (projeto de módulos) está espelhada em qual nível de teste?",
+options:["Teste de unidade","Teste de integração","Teste de sistema","Teste de aceitação"],
+answer:0,
+exp:"O projeto detalhado (de cada módulo) corresponde ao teste de unidade. Quanto mais baixo o nível de projeto, mais baixo o nível de teste espelhado no V."},
+
+{prova:"pf",topic:"Modelo V e Ciclo de Vida",diff:"easy",type:"mc",
+text:"[1,0] No Modelo V, durante a fase de ESPECIFICAÇÃO DO SISTEMA (projeto de alto nível do sistema), qual nível de teste está sendo PLANEJADO?",
+options:["Teste de sistema","Teste de unidade","Teste de aceitação","Teste de regressão"],
+answer:0,
+exp:"A especificação do sistema espelha o teste de sistema. No Modelo V cada fase à esquerda planeja o nível de teste correspondente à direita."},
+
+{prova:"pf",topic:"Modelo V e Ciclo de Vida",diff:"medium",type:"mc",
+text:"[1,0] Qual é a principal vantagem do Modelo V em relação a um modelo cascata tradicional?",
+options:["Elimina a necessidade de testes de aceitação","Antecipa o planejamento de cada nível de teste, associando-o à fase de desenvolvimento correspondente","Permite que a codificação ocorra antes da análise de requisitos","Garante ausência total de defeitos no produto final"],
+answer:1,
+exp:"O Modelo V integra teste ao desenvolvimento: cada fase à esquerda já planeja seu nível de teste correspondente à direita, antecipando a detecção de problemas em vez de deixar todo o teste para o fim."},
+
+{prova:"pf",topic:"Modelo V e Ciclo de Vida",diff:"medium",type:"mc",
+text:"[1,0] Considerando o Modelo V, associe corretamente as fases de desenvolvimento aos níveis de teste: análise de requisitos, projeto de arquitetura e projeto detalhado.",
+options:["aceitação, integração, unidade","unidade, integração, aceitação","integração, aceitação, unidade","aceitação, unidade, integração"],
+answer:0,
+exp:"Requisitos → aceitação; arquitetura (alto nível) → integração; projeto detalhado (módulos) → unidade. Essa simetria é a essência do V."},
+
+{prova:"pf",topic:"Modelo V e Ciclo de Vida",diff:"hard",type:"mc",
+text:"[1,0] Uma equipe seguindo o Modelo V está na fase de análise de requisitos. Um membro afirma: 'Como ainda não há código, não há nada a fazer em relação a testes nesta fase.' Por que essa afirmação está ERRADA?",
+options:["Porque os testes de unidade já deveriam estar sendo executados","Porque o planejamento dos testes de aceitação deve ocorrer já nesta fase, espelhando os requisitos","Porque o Modelo V exige codificar antes de levantar requisitos","Porque a fase de requisitos não pertence ao Modelo V"],
+answer:1,
+exp:"No Modelo V, planejar testes não exige código. Na análise de requisitos já se PLANEJAM os testes de aceitação (lado direito espelhado). A execução é que virá depois, na subida do V."},
+
+{prova:"pf",topic:"Modelo V e Ciclo de Vida",diff:"medium",type:"tf",
+text:"[1,6] Assinale V para as verdadeiras e F para as falsas sobre o Modelo V e os níveis de teste.",
+statements:[
+{text:"O teste de unidade está associado à fase de projeto detalhado dos módulos.",answer:true},
+{text:"No Modelo V, o planejamento dos testes de aceitação só pode começar após a codificação.",answer:false},
+{text:"A execução dos testes ocorre na subida do V, do nível mais baixo ao mais alto.",answer:true},
+{text:"O Modelo V foi proposto por Rook (1986).",answer:true}
+],
+exp:"O planejamento de cada nível de teste começa JUNTO da fase de desenvolvimento correspondente (descida do V). A execução sobe do teste de unidade até a aceitação."},
+
+// ── Tema 2: ISO/IEC 25010 e Qualidade ──
+{prova:"pf",topic:"Padrão ISO/IEC 25010",diff:"easy",type:"mc",
+text:"[1,0] Segundo a ISO/IEC 25010, a subcaracterística 'Interoperabilidade' pertence a qual característica de qualidade?",
+options:["Compatibilidade","Confiabilidade","Usabilidade","Segurança"],
+answer:0,
+exp:"Compatibilidade reúne Coexistência e Interoperabilidade. Interoperabilidade = capacidade de dois ou mais sistemas trocarem e usarem informações."},
+
+{prova:"pf",topic:"Padrão ISO/IEC 25010",diff:"easy",type:"mc",
+text:"[1,0] Segundo a ISO/IEC 25010, 'Tolerância a falhas' e 'Recuperabilidade' são subcaracterísticas de qual característica?",
+options:["Confiabilidade","Segurança","Manutenibilidade","Portabilidade"],
+answer:0,
+exp:"Confiabilidade reúne Maturidade, Disponibilidade, Tolerância a falhas e Recuperabilidade — relaciona-se à capacidade do sistema de manter o funcionamento sob condições adversas."},
+
+{prova:"pf",topic:"Padrão ISO/IEC 25010",diff:"medium",type:"mc",
+text:"[1,0] Segundo a ISO/IEC 25010, a 'Testabilidade' — facilidade de estabelecer critérios de teste e executá-los para verificar se foram atendidos — é subcaracterística de qual característica?",
+options:["Manutenibilidade","Adequação Funcional","Usabilidade","Confiabilidade"],
+answer:0,
+exp:"Manutenibilidade reúne Modularidade, Reusabilidade, Analisabilidade, Modificabilidade e Testabilidade. Software testável é mais fácil de manter."},
+
+{prova:"pf",topic:"Padrão ISO/IEC 25010",diff:"medium",type:"mc",
+text:"[1,0] Segundo a ISO/IEC 25010, 'Confidencialidade', 'Integridade' e 'Autenticidade' são subcaracterísticas de qual característica de qualidade?",
+options:["Segurança","Confiabilidade","Compatibilidade","Adequação Funcional"],
+answer:0,
+exp:"Segurança reúne Confidencialidade, Integridade, Não-repúdio, Responsabilização e Autenticidade — proteção das informações e do acesso."},
+
+{prova:"pf",topic:"Padrão ISO/IEC 25010",diff:"hard",type:"mc",
+text:"[1,0] Um sistema precisa funcionar bem ao compartilhar o mesmo servidor com outras aplicações, sem degradar nem ser degradado por elas. Qual subcaracterística da ISO/IEC 25010 está em foco?",
+options:["Coexistência (Compatibilidade)","Interoperabilidade (Compatibilidade)","Maturidade (Confiabilidade)","Modularidade (Manutenibilidade)"],
+answer:0,
+exp:"Coexistência = operar eficientemente compartilhando ambiente/recursos comuns com outros produtos, sem impacto negativo. Interoperabilidade seria TROCAR informações com outros sistemas."},
+
+{prova:"pf",topic:"Padrão ISO/IEC 25010",diff:"medium",type:"tf",
+text:"[1,6] Assinale V ou F sobre as características de qualidade da ISO/IEC 25010.",
+statements:[
+{text:"Coexistência e Interoperabilidade são subcaracterísticas da Compatibilidade.",answer:true},
+{text:"Testabilidade é uma subcaracterística da Manutenibilidade.",answer:true},
+{text:"Tolerância a falhas pertence à característica Usabilidade.",answer:false},
+{text:"Confidencialidade e Integridade pertencem à característica Segurança.",answer:true}
+],
+exp:"Tolerância a falhas pertence à Confiabilidade, não à Usabilidade. As demais associações estão corretas conforme a ISO/IEC 25010."},
+
+{prova:"pf",topic:"Qualidade de Software",diff:"easy",type:"mc",
+text:"[1,0] O teste de resiliência, que avalia a capacidade do sistema de se recuperar de falhas e continuar operando, é classificado como:",
+options:["Teste não funcional","Teste funcional","Teste de unidade","Teste de aceitação"],
+answer:0,
+exp:"Resiliência diz respeito a COMO o sistema se comporta sob falhas (qualidade de recuperação), não a regras de negócio — portanto é teste NÃO funcional."},
+
+{prova:"pf",topic:"Qualidade de Software",diff:"medium",type:"mc",
+text:"[1,0] 'Um teste bem-sucedido é aquele que revela a presença de um defeito ainda não descoberto.' Essa visão sobre o objetivo dos testes é mais associada a qual ideia?",
+options:["O teste prova que o software está livre de defeitos","O teste busca refutar a correção do software, expondo defeitos","O teste substitui a depuração","O teste garante 100% de cobertura"],
+answer:1,
+exp:"Visão de Myers: testar é tentar refutar a correção, e um teste 'de sucesso' é o que encontra defeito. Testes não provam ausência de defeitos."},
+
+{prova:"pf",topic:"Defeitos de Software",diff:"medium",type:"mc",
+text:"[1,0] A respeito da terminologia de defeitos, qual sequência causal está CORRETA?",
+options:["Defeito (no código) → falha (execução incorreta) → erro (estado interno inválido)","Engano humano → defeito (no código) → erro (estado interno inválido) → falha (comportamento observável incorreto)","Falha → erro → defeito → engano","Erro → falha → engano → defeito"],
+answer:1,
+exp:"Engano (mistake) do humano introduz um defeito (fault/bug) no código; ao executar, ele pode gerar um erro (estado interno incorreto), que pode se manifestar como falha (failure) observável."},
+
+{prova:"pf",topic:"Defeitos de Software",diff:"hard",type:"mc",
+text:"[1,0] Um defeito existe no código de tratamento de uma exceção raríssima, que nunca é acionada em produção. Sobre esse defeito, é CORRETO afirmar:",
+options:["Todo defeito sempre gera uma falha observável","Um defeito pode existir sem nunca produzir uma falha, caso o trecho defeituoso não seja exercido","Defeito e falha são sinônimos","Como não há falha, não existe defeito"],
+answer:1,
+exp:"Defeito é a causa potencial; falha é a manifestação. Se o caminho defeituoso nunca for executado com os dados que disparam o problema, o defeito existe mas não vira falha."},
+
+{prova:"pf",topic:"Qualidade de Software",diff:"medium",type:"tf",
+text:"[1,6] Assinale V ou F sobre fundamentos de qualidade e teste.",
+statements:[
+{text:"O teste de resiliência é um tipo de teste não funcional.",answer:true},
+{text:"Testes exaustivos (testar todas as entradas possíveis) são, em geral, viáveis e recomendados.",answer:false},
+{text:"A ausência de falhas em uma bateria de testes prova a ausência de defeitos no software.",answer:false},
+{text:"O objetivo de testar é revelar defeitos, não demonstrar que o software está correto.",answer:true}
+],
+exp:"Teste exaustivo é inviável (exceto casos triviais). Ausência de falhas não prova ausência de defeitos. Testar busca refutar a correção, revelando defeitos."},
+
+// ── Tema 3: Depuração e Regressão ──
+{prova:"pf",topic:"Depuração",diff:"easy",type:"mc",
+text:"[1,0] Qual a diferença fundamental entre TESTE e DEPURAÇÃO (debugging)?",
+options:["São sinônimos","O teste revela a existência de falhas; a depuração localiza e corrige a causa (defeito)","A depuração revela falhas; o teste corrige o código","Ambos servem apenas para medir desempenho"],
+answer:1,
+exp:"Teste evidencia que algo está errado (falha). Depuração investiga a causa-raiz (defeito) e a corrige. São atividades complementares, mas distintas."},
+
+{prova:"pf",topic:"Depuração",diff:"medium",type:"mc",
+text:"[1,0] São métodos clássicos de depuração, EXCETO:",
+options:["Força bruta","Indução","Dedução","Teste de aceitação"],
+answer:3,
+exp:"Métodos de depuração incluem força bruta, indução, dedução e backtracking (eliminação de causas). Teste de aceitação é um NÍVEL de teste, não um método de depuração."},
+
+{prova:"pf",topic:"Depuração",diff:"medium",type:"mc",
+text:"[1,0] Um desenvolvedor parte de um sintoma observado e, percorrendo o código de trás para frente até a origem do defeito, localiza a causa. Qual método de depuração ele utilizou?",
+options:["Backtracking (rastreamento reverso)","Força bruta","Indução pura","Análise de despejo de memória"],
+answer:0,
+exp:"Backtracking percorre o fluxo do ponto da falha para trás até encontrar onde o estado se tornou incorreto. Eficaz em programas pequenos."},
+
+{prova:"pf",topic:"Depuração",diff:"easy",type:"mc",
+text:"[1,0] Após corrigir o defeito que causava uma falha, por que é necessário executar testes de regressão?",
+options:["Para medir o tempo de resposta do sistema","Para garantir que a correção não introduziu novos defeitos nem quebrou funcionalidades já existentes","Para substituir a documentação do sistema","Porque a depuração ainda não terminou"],
+answer:1,
+exp:"Uma correção pode introduzir efeitos colaterais. O teste de regressão reexecuta os casos existentes para confirmar que nada que funcionava foi quebrado."},
+
+{prova:"pf",topic:"Depuração",diff:"medium",type:"tf",
+text:"[1,6] Assinale V ou F sobre teste, depuração e regressão.",
+statements:[
+{text:"A análise de despejo de memória (memory dump) é um método de depuração por força bruta.",answer:true},
+{text:"Após corrigir um defeito, deve-se executar testes de regressão antes de prosseguir.",answer:true},
+{text:"Depuração e teste são exatamente a mesma atividade.",answer:false},
+{text:"O backtracking percorre o código a partir da falha em direção à sua origem.",answer:true}
+],
+exp:"Memory dump = força bruta. Regressão valida correções. Teste ≠ depuração (revelar vs. localizar/corrigir). Backtracking caminha do sintoma à causa."},
+
+{prova:"pf",topic:"Depuração",diff:"hard",type:"mc",
+text:"[1,0] Em um processo conjunto de teste e depuração, qual é a ordem CORRETA das atividades após uma falha ser observada?",
+options:["Corrigir → encontrar a causa → executar regressão → continuar testando","Encontrar a causa (depurar) → corrigir o defeito → executar testes de regressão → continuar o processo de teste","Executar regressão → encontrar a causa → encerrar","Continuar testando → corrigir → ignorar regressão"],
+answer:1,
+exp:"Fluxo correto: a falha aciona a depuração (achar a causa), corrige-se o defeito, executa-se a regressão para validar e só então o processo de teste prossegue."},
+
+// ── Tema 4: JUnit parametrizado, asserções, exceções ──
+{prova:"pf",topic:"Testes Parametrizados",diff:"easy",type:"mc",
+text:"[1,0] Qual par de anotações permite executar o MESMO método de teste várias vezes, uma para cada valor de uma lista de literais (argumentos simples)?",
+options:["@ParameterizedTest + @ValueSource","@Test + @BeforeEach","@RepeatedTest + @MethodSource","@Test + @CsvSource"],
+answer:0,
+exp:"@ParameterizedTest marca o método como parametrizado; @ValueSource(strings/ints/...) fornece a lista de argumentos simples. @Test puro executa uma única vez."},
+
+{prova:"pf",topic:"Testes Parametrizados",diff:"medium",type:"mc",
+text:"[1,0] Em um @ParameterizedTest que precisa receber várias Strings literais como entrada, qual fonte de dados é a mais adequada?",
+options:["@ValueSource(strings = {...})","@MethodSource sem método","@EnumSource","@NullSource"],
+answer:0,
+exp:"@ValueSource(strings = {\"a\", \"b\"}) injeta cada literal como um argumento simples — exatamente o caso de 'argumentos simples' pedido em prova."},
+
+{prova:"pf",topic:"Asserções",diff:"easy",type:"mc",
+text:"[1,0] Qual asserção do JUnit 5 deve ser usada para verificar que um método LANÇA uma exceção do tipo DataFormatException?",
+options:["assertThrows(DataFormatException.class, () -> m())","assertDoesNotThrow(() -> m())","assertEquals(DataFormatException.class, m())","assertNull(() -> m())"],
+answer:0,
+exp:"assertThrows(Classe.class, () -> { chamada; }) falha se a exceção esperada não for lançada. É a forma idiomática de testar exceções no JUnit 5."},
+
+{prova:"pf",topic:"Asserções",diff:"medium",type:"tf",
+text:"[1,6] Assinale V ou F sobre asserções de exceção no JUnit 5.",
+statements:[
+{text:"assertThrows verifica que o bloco lança a exceção esperada.",answer:true},
+{text:"assertDoesNotThrow verifica que o bloco NÃO lança nenhuma exceção.",answer:true},
+{text:"Para validar uma entrada VÁLIDA, usa-se assertThrows.",answer:false},
+{text:"assertThrows e assertDoesNotThrow recebem a chamada dentro de uma expressão lambda.",answer:true}
+],
+exp:"Entrada válida → assertDoesNotThrow; entrada inválida → assertThrows. Ambas recebem a chamada como lambda (() -> ...)."},
+
+{prova:"pf",topic:"Anotações JUnit",diff:"medium",type:"mc",
+text:"[1,0] Uma especificação exige que, antes da execução de TODOS os testes, seja instanciado UM único objeto compartilhado por todos eles, sem recriá-lo a cada teste. Qual anotação atende a esse requisito?",
+options:["@BeforeAll (em método estático)","@BeforeEach","@Test","@AfterAll"],
+answer:0,
+exp:"@BeforeAll executa UMA vez antes de toda a classe e deve estar em método estático — ideal para um objeto único compartilhado. @BeforeEach recriaria o objeto a cada teste."},
+
+{prova:"pf",topic:"Anotações JUnit",diff:"hard",type:"mc",
+text:"[1,0] Um desenvolvedor anotou com @BeforeAll um método NÃO estático para instanciar um recurso compartilhado. O que acontece?",
+options:["Funciona normalmente","O JUnit 5 lança erro: métodos @BeforeAll devem ser estáticos (salvo ciclo de vida PER_CLASS)","O método passa a se comportar como @BeforeEach","O recurso é instanciado duas vezes"],
+answer:1,
+exp:"Por padrão (ciclo PER_METHOD), @BeforeAll/@AfterAll exigem método estático. Sem static, o JUnit lança erro — a menos que se use @TestInstance(PER_CLASS)."},
+
+{prova:"pf",topic:"Testes Parametrizados",diff:"medium",type:"code",
+text:"[2,0] Considere a classe FormatoValidador com o método validarEquacaoLinear(String eq) que lança DataFormatException para equações inválidas. Implemente um teste parametrizado JUnit 5 chamado testValidarEquacaoInvalida que, para cada equação INVÁLIDA fornecida por argumentos simples (\"x+23.2=0\", \"5)x+6.23=0\", \"0.5x+-0.23=0\", \"(1.2)x+100\"), verifica que DataFormatException é lançada. Considere o atributo 'fv' já inicializado.",
+answer:`@ParameterizedTest
+@ValueSource(strings = {"x+23.2=0", "5)x+6.23=0", "0.5x+-0.23=0", "(1.2)x+100"})
+public void testValidarEquacaoInvalida(String eq) {
+    assertThrows(DataFormatException.class, () -> fv.validarEquacaoLinear(eq));
+}`,
+keywords:["@ParameterizedTest","@ValueSource","testValidarEquacaoInvalida","assertThrows","DataFormatException","validarEquacaoLinear"],
+exp:"@ValueSource injeta cada equação inválida; assertThrows(DataFormatException.class, () -> ...) confirma que a validação rejeita o formato lançando a exceção."},
+
+{prova:"pf",topic:"Anotações JUnit",diff:"medium",type:"code",
+text:"[2,0] Considere a classe FormatoValidador, construída como new FormatoValidador(new ValidadorTextual()). Implemente o método de inicialização que, ANTES DE TODOS os testes, instancia UM único objeto 'fv' compartilhado por todos os testes (não deve ser recriado a cada teste).",
+answer:`private static FormatoValidador fv;
+
+@BeforeAll
+public static void setUpAll() {
+    fv = new FormatoValidador(new ValidadorTextual());
+}`,
+keywords:["static","@BeforeAll","fv","FormatoValidador","ValidadorTextual"],
+exp:"@BeforeAll em método ESTÁTICO instancia o objeto uma única vez para toda a classe. O atributo também deve ser estático para ser acessível no método estático."},
+
+{prova:"pf",topic:"Testes Parametrizados",diff:"hard",type:"code",
+text:"[3,0] Considere a classe Calculadora com o método ehPar(int n) que lança IllegalArgumentException para valores negativos. Desenvolva um teste parametrizado JUnit 5 chamado testEhParNegativo que, para cada valor inválido fornecido por argumentos simples (-1, -10, -100), verifica que IllegalArgumentException é lançada. Considere o atributo 'calc' já inicializado.",
+answer:`@ParameterizedTest
+@ValueSource(ints = {-1, -10, -100})
+public void testEhParNegativo(int n) {
+    assertThrows(IllegalArgumentException.class, () -> calc.ehPar(n));
+}`,
+keywords:["@ParameterizedTest","@ValueSource","ints","testEhParNegativo","assertThrows","IllegalArgumentException"],
+exp:"@ValueSource(ints = {...}) fornece inteiros como argumentos simples; assertThrows confirma que cada valor negativo dispara IllegalArgumentException."},
+
+{prova:"pf",topic:"Análise de Código",diff:"hard",type:"mc",
+text:"[1,0] No teste parametrizado abaixo, por que ele FALHA na compilação?\n\n@ParameterizedTest\n@ValueSource(strings = {\"a\", \"b\"})\npublic void testX() {\n    assertNotNull(\"a\");\n}",
+options:["Falta a anotação @Test","O método parametrizado não declara o parâmetro que recebe cada valor (ex.: String s)","@ValueSource não aceita strings","assertNotNull não existe"],
+answer:1,
+exp:"Um @ParameterizedTest com @ValueSource(strings=...) deve receber o valor como parâmetro: public void testX(String s). Sem o parâmetro, não há onde injetar cada literal."},
+
+// ── Tema 5: Katalon ──
+{prova:"pf",topic:"Katalon",diff:"easy",type:"mc",
+text:"[1,0] Em um script Katalon, qual comando preenche o campo de entrada 'Object InpNumero' com o valor 829?",
+options:["WebUI.setText(findTestObject('Object InpNumero'), '829')","WebUI.verifyText(findTestObject('Object InpNumero'), '829')","WebUI.click(findTestObject('Object InpNumero'))","WebUI.findText('Object InpNumero', 829)"],
+answer:0,
+exp:"WebUI.setText(findTestObject('nome'), 'valor') preenche campos. verifyText VERIFICA, não preenche; findText não é usado para inserir dados."},
+
+{prova:"pf",topic:"Katalon",diff:"medium",type:"mc",
+text:"[1,0] No verificador de números primos, após preencher o número deseja-se conferir se o campo de saída 'Object InpEPrimo' contém 'Sim'. Qual abordagem é adequada em Katalon?",
+options:["WebUI.verifyElementAttributeValue(findTestObject('Object InpEPrimo'), 'value', 'Sim', 0)","WebUI.setText(findTestObject('Object InpEPrimo'), 'Sim')","WebUI.click(findTestObject('Object InpEPrimo'))","WebUI.openBrowser('Sim')"],
+answer:0,
+exp:"Para conferir o conteúdo de um campo (input), usa-se uma verificação — verifyElementAttributeValue confere o atributo 'value'. setText preencheria o campo (errado: queremos verificar, não escrever)."},
+
+{prova:"pf",topic:"Katalon",diff:"easy",type:"mc",
+text:"[1,0] Qual anotação Katalon executa um método de finalização SOMENTE quando o teste é bem-sucedido?",
+options:["@TearDown","@TearDownIfError","@Setup","@BeforeEach"],
+answer:0,
+exp:"@TearDown executa apenas após SUCESSO; @TearDownIfError apenas após FALHA. Inverter os dois é o erro mais cobrado em prova."},
+
+{prova:"pf",topic:"Katalon",diff:"medium",type:"mc",
+text:"[1,0] A especificação diz: 'o navegador deve ser fechado apenas se o teste tiver sido malsucedido'. Um aluno usou @TearDown para o closeBrowser(). Qual é o erro?",
+options:["Nenhum, está correto","@TearDown fecha apenas em SUCESSO; o correto para fechar em falha é @TearDownIfError","closeBrowser() não existe","Deveria usar @Setup"],
+answer:1,
+exp:"'Fechar apenas se malsucedido' = fechar em FALHA → @TearDownIfError. @TearDown executaria só em sucesso, exatamente o oposto da especificação."},
+
+{prova:"pf",topic:"Katalon",diff:"medium",type:"tf",
+text:"[1,6] Assinale V ou F sobre o script Katalon do verificador de números primos.",
+statements:[
+{text:"WebUI.openBrowser('http://localhost/numerosprimos.html') deve ficar no método @Setup.",answer:true},
+{text:"Para fechar o navegador apenas em caso de falha, usa-se @TearDownIfError.",answer:true},
+{text:"WebUI.setText é usado para VERIFICAR o resultado exibido na tela.",answer:false},
+{text:"Usar um laço sobre a lista de dados torna o teste escalável para muitos itens.",answer:true}
+],
+exp:"setText PREENCHE; a verificação é feita com verifyText/verifyElementAttributeValue. As demais afirmações estão corretas."},
+
+{prova:"pf",topic:"Katalon",diff:"easy",type:"code",
+text:"[1,0] Implemente o método @Setup de um script Katalon que abre o navegador no endereço http://localhost/numerosprimos.html.",
+answer:`@Setup
+def setUp() {
+    WebUI.openBrowser('http://localhost/numerosprimos.html')
+}`,
+keywords:["@Setup","openBrowser","numerosprimos"],
+exp:"@Setup roda antes dos testes; WebUI.openBrowser('url') abre e navega para a URL informada."},
+
+{prova:"pf",topic:"Katalon",diff:"medium",type:"code",
+text:"[2,0] Considere o verificador de primos com o campo de entrada 'Object InpNumero' e o de saída 'Object InpEPrimo'. Implemente os comandos Katalon que: preenchem o número 829 e verificam que a saída contém 'Sim'.",
+answer:`WebUI.setText(findTestObject('Object InpNumero'), '829')
+WebUI.verifyElementAttributeValue(findTestObject('Object InpEPrimo'), 'value', 'Sim', 0)`,
+keywords:["setText","InpNumero","829","verify","InpEPrimo","Sim"],
+exp:"Sequência: preencher a entrada (setText) e verificar a saída (verifyElementAttributeValue no atributo 'value'). A verificação sempre vem após preencher."},
+
+{prova:"pf",topic:"Katalon",diff:"hard",type:"code",
+text:"[3,0] Considere um verificador de números pares cuja interface possui o campo de entrada 'Object InpNum' e a saída 'Object InpEhPar'. Desenvolva um script de caso de teste em Katalon que: abra o navegador em http://localhost/pares.html; para cada item da tabela atribua o número e verifique a saída — 10→Sim, 7→Não, 0→Sim; e, ao término, feche o navegador APENAS se o teste tiver sido malsucedido. Considere que o número de itens pode ser muito maior.",
+answer:`@Setup
+def setUp() {
+    WebUI.openBrowser('http://localhost/pares.html')
+}
+
+@TearDownIfError
+def tearDown() {
+    WebUI.closeBrowser()
+}
+
+def dados = [
+    [10, 'Sim'],
+    [7,  'Não'],
+    [0,  'Sim']
+]
+
+for (linha in dados) {
+    WebUI.setText(findTestObject('Object InpNum'), String.valueOf(linha[0]))
+    WebUI.verifyElementAttributeValue(findTestObject('Object InpEhPar'), 'value', linha[1], 0)
+}`,
+keywords:["@Setup","openBrowser","pares","@TearDownIfError","closeBrowser","for","setText","InpNum","verify","InpEhPar"],
+exp:"Mesma estrutura do verificador de primos: @Setup abre; @TearDownIfError fecha só em falha; laço escalável sobre os dados; setText na entrada e verifyElementAttributeValue na saída."},
+
+{prova:"pf",topic:"Katalon",diff:"hard",type:"mc",
+text:"[1,0] No script Katalon do verificador de primos, por que é recomendado iterar sobre uma LISTA de dados em um laço, em vez de repetir manualmente setText/verify para cada número?",
+options:["Porque o Katalon proíbe chamadas repetidas de setText","Porque torna o teste escalável: a especificação avisa que o número de itens pode ser muito maior que o apresentado","Porque laços executam mais rápido que chamadas diretas","Porque sem laço o navegador não abre"],
+answer:1,
+exp:"A especificação alerta que o número de itens pode ser muito maior. Um laço sobre a lista de dados evita repetição e escala para qualquer quantidade de casos."}
+
 
 ]; // fim BANK

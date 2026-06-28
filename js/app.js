@@ -25,7 +25,8 @@ function init() {
   // Prova counts
   document.getElementById('cnt-p1').textContent = BANK.filter(q=>q.prova==='p1').length + ' questões';
   document.getElementById('cnt-p2').textContent = BANK.filter(q=>q.prova==='p2').length + ' questões';
-  document.getElementById('cnt-pf').textContent = BANK.length + ' questões';
+  document.getElementById('cnt-pf').textContent = BANK.filter(q=>q.prova==='pf').length + ' questões';
+  document.getElementById('cnt-all').textContent = BANK.length + ' questões';
   buildTopicsGrid();
   // dummy loop suppressor (buildTopicsGrid handles the grid now)
   if (false) { TOPICS_LIST.forEach(t => {
@@ -55,7 +56,7 @@ function selectProva(p, card) {
 }
 
 function provaFilter(q) {
-  if (selProva === 'pf') return true;
+  if (selProva === 'all') return true;
   return q.prova === selProva;
 }
 
