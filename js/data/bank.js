@@ -1984,4 +1984,251 @@ answer:1,
 exp:"A especificação alerta que o número de itens pode ser muito maior. Um laço sobre a lista de dados evita repetição e escala para qualquer quantidade de casos."}
 
 
+// ══════════════════ P2 — PROVA 2 CORRIGIDA (Conversor de Temperatura) ══════════════════
+// Questões baseadas na P2 2026/1 (Prof. Octavio Vieira de Aguiar) e seu gabarito
+
+// ── @MethodSource: assinatura do método provedor ──
+,{prova:"p2",topic:"Testes Parametrizados",diff:"easy",type:"mc",
+text:"[1,0] Em um teste parametrizado JUnit 5, qual anotação indica que os argumentos serão fornecidos por um MÉTODO provedor (provimento de argumentos)?",
+options:["@MethodSource","@ValueSource","@CsvSource","@EnumSource"],
+answer:0,
+exp:"@MethodSource referencia um método estático que retorna os argumentos (Stream, Collection, etc.). @ValueSource fornece literais simples; @CsvSource, linhas CSV inline."},
+
+{prova:"p2",topic:"Testes Parametrizados",diff:"medium",type:"mc",
+text:"[1,0] Considere um método de teste parametrizado cuja assinatura é public void testAtribuirNome(String nome), que recebe via @MethodSource os valores 'Maria', 'Elso' e 'Manel'. Qual é a assinatura MAIS correta para o método de provimento de argumentos?",
+options:["public static Stream<String> testAtribuirNomeArgs()","public static Stream<String[]> testAtribuirNomeArgs()","public static Arguments<String> testAtribuirNomeArgs()","public static Arguments<String[]> testAtribuirNomeArgs()"],
+answer:0,
+exp:"Como o teste recebe UM único parâmetro String, o provedor deve retornar Stream<String> (cada elemento é um argumento). Stream<String[]> serviria para múltiplos parâmetros; Arguments<...> não é um tipo de retorno válido. O método deve ser static."},
+
+{prova:"p2",topic:"Testes Parametrizados",diff:"medium",type:"mc",
+text:"[1,0] Um método de teste parametrizado recebe MÚLTIPLOS parâmetros de tipos diferentes (ex.: Temperatura, Unidade, Temperatura). Como o método provedor de @MethodSource deve fornecer cada caso?",
+options:["Retornando Stream<Arguments>, em que cada caso é montado com Arguments.of(...)","Retornando Stream<String> com os valores concatenados","Retornando um único Arguments sem Stream","Usando @ValueSource em vez de @MethodSource"],
+answer:0,
+exp:"Para múltiplos parâmetros, o provedor retorna Stream<Arguments> e cada caso é Arguments.of(arg1, arg2, arg3). O JUnit injeta os elementos de Arguments nos parâmetros do teste, na ordem."},
+
+{prova:"p2",topic:"Testes Parametrizados",diff:"hard",type:"mc",
+text:"[1,0] No JUnit 5, em quais condições é possível usar @MethodSource SEM informar o nome do método provedor entre parênteses?",
+options:["Quando o método provedor tem o MESMO nome do método de teste","Nunca — o nome é sempre obrigatório","Apenas quando o provedor retorna @ValueSource","Apenas quando o teste não recebe parâmetros"],
+answer:0,
+exp:"Por convenção, se o método provedor tiver o mesmo nome do método de teste, pode-se usar apenas @MethodSource (sem o argumento). Foi o caso do gabarito: testConverter() provê e testConverter(...) consome."},
+
+{prova:"p2",topic:"Testes Parametrizados",diff:"easy",type:"mc",
+text:"[1,0] Sobre o método provedor usado com @MethodSource, é CORRETO afirmar que ele deve ser, por padrão:",
+options:["static","private e de instância","final","abstract"],
+answer:0,
+exp:"Por padrão (ciclo PER_METHOD), o método provedor de @MethodSource deve ser estático, pois é chamado antes de qualquer instância de teste. Com @TestInstance(PER_CLASS) ele pode ser de instância."},
+
+{prova:"p2",topic:"Testes Parametrizados",diff:"medium",type:"tf",
+text:"[1,6] Assinale V ou F sobre @MethodSource e provimento de argumentos no JUnit 5.",
+statements:[
+{text:"O método provedor de @MethodSource deve ser, por padrão, estático.",answer:true},
+{text:"Para um teste com um único parâmetro String, o provedor pode retornar Stream<String>.",answer:true},
+{text:"Para múltiplos parâmetros, monta-se cada caso com Arguments.of(...).",answer:true},
+{text:"@MethodSource só funciona se o teste não receber nenhum parâmetro.",answer:false}
+],
+exp:"@MethodSource serve justamente para injetar parâmetros: Stream<String> para um argumento, Stream<Arguments> (com Arguments.of) para vários. O provedor é estático por padrão."},
+
+// ── @CsvSource × @CsvFileSource ──
+{prova:"p2",topic:"Testes Parametrizados",diff:"easy",type:"mc",
+text:"[1,0] Para fornecer dados a um teste parametrizado a partir de um ARQUIVO CSV externo (carregado de um arquivo), qual anotação deve ser utilizada?",
+options:["@CsvFileSource","@CsvSource","@ValueSource","@MethodSource"],
+answer:0,
+exp:"@CsvFileSource lê os dados de um arquivo .csv (atributo resources/files). @CsvSource recebe as linhas CSV inline, diretamente no código."},
+
+{prova:"p2",topic:"Testes Parametrizados",diff:"medium",type:"mc",
+text:"[1,0] Qual é a diferença entre @CsvSource e @CsvFileSource?",
+options:["@CsvSource recebe as linhas CSV inline no código; @CsvFileSource lê as linhas de um arquivo .csv externo","São sinônimos","@CsvSource só aceita inteiros; @CsvFileSource só aceita Strings","@CsvFileSource é exclusivo do Katalon"],
+answer:0,
+exp:"@CsvSource({\"1, um\", \"2, dois\"}) traz os dados embutidos. @CsvFileSource(resources = \"/dados.csv\") carrega de arquivo — útil para grandes volumes de dados."},
+
+{prova:"p2",topic:"Testes Parametrizados",diff:"medium",type:"tf",
+text:"[1,6] Assinale V ou F sobre as fontes de dados de testes parametrizados.",
+statements:[
+{text:"A passagem de parâmetros por argumentos CSV carregados de ARQUIVOS é feita com @CsvSource.",answer:false},
+{text:"@ValueSource fornece uma lista de literais simples (um argumento por execução).",answer:true},
+{text:"@CsvFileSource lê os dados de um arquivo .csv externo.",answer:true},
+{text:"@MethodSource permite fornecer objetos complexos por meio de um método provedor.",answer:true}
+],
+exp:"CSV de ARQUIVO usa @CsvFileSource (não @CsvSource, que é inline). Esse é exatamente o item A da P2, cujo gabarito é F."},
+
+// ── Asserções: assertThrows / assertDoesNotThrow / tolerância ──
+{prova:"p2",topic:"Asserções",diff:"easy",type:"mc",
+text:"[1,0] No JUnit 5, quais parâmetros o método assertThrows deve receber?",
+options:["Uma classe de exceção e uma função anônima (lambda) com a chamada","Apenas a função anônima (lambda)","Apenas a classe de exceção","O valor esperado e o valor obtido"],
+answer:0,
+exp:"assertThrows(MinhaExcecao.class, () -> { chamada; }) — precisa da CLASSE da exceção esperada e do bloco lambda. Se a exceção não for lançada, o teste falha."},
+
+{prova:"p2",topic:"Asserções",diff:"medium",type:"mc",
+text:"[1,0] Diferente de assertThrows, o método assertDoesNotThrow:",
+options:["Não precisa receber a classe de exceção — apenas a função anônima (lambda)","Precisa receber duas classes de exceção","Só funciona com exceções verificadas (checked)","Substitui o @Test"],
+answer:0,
+exp:"assertDoesNotThrow(() -> { chamada; }) verifica que NENHUMA exceção é lançada, logo não há classe de exceção a informar — basta a lambda. assertThrows é que exige a classe esperada."},
+
+{prova:"p2",topic:"Asserções",diff:"medium",type:"mc",
+text:"[1,0] Ao verificar que uma conversão de temperatura (double) coincide com o valor esperado admitindo uma tolerância de 1 unidade, qual chamada é a correta no JUnit 5?",
+options:["assertEquals(esperado, obtido, 1)","assertEquals(esperado, obtido)","assertSame(esperado, obtido)","assertTrue(esperado == obtido)"],
+answer:0,
+exp:"Para doubles, usa-se assertEquals(esperado, obtido, delta), onde delta é a tolerância (aqui, 1). Comparar doubles sem tolerância (== ou assertEquals de 2 args) é frágil devido a arredondamentos."},
+
+{prova:"p2",topic:"Asserções",diff:"hard",type:"mc",
+text:"[1,0] Por que comparar dois valores double com assertEquals(esperado, obtido) (sem tolerância) é considerado uma má prática?",
+options:["Porque arredondamentos de ponto flutuante podem fazer valores 'iguais' diferirem em casas decimais, falhando o teste","Porque assertEquals não aceita double","Porque double não pode ser testado","Porque o correto seria assertSame"],
+answer:0,
+exp:"Operações com double acumulam erros de ponto flutuante; 0.1+0.2 != 0.3 exatamente. Por isso usa-se a versão com delta (tolerância): assertEquals(esperado, obtido, delta)."},
+
+{prova:"p2",topic:"Asserções",diff:"medium",type:"tf",
+text:"[1,6] Assinale V ou F sobre asserções no JUnit 5.",
+statements:[
+{text:"assertThrows deve receber, ao menos, uma classe de exceção e uma função anônima.",answer:true},
+{text:"assertDoesNotThrow não precisa receber a classe de exceção.",answer:true},
+{text:"Para comparar doubles, recomenda-se assertEquals com um parâmetro de tolerância (delta).",answer:true},
+{text:"assertSame compara o conteúdo (equals) de dois objetos.",answer:false}
+],
+exp:"assertThrows = classe + lambda; assertDoesNotThrow = só lambda; doubles → delta. assertSame compara REFERÊNCIA (==), não conteúdo (equals)."},
+
+// ── Katalon: @Setup × @BeforeAll, selectOptionByValue, verifyElementAttributeValue, @TearDownIfPassed ──
+{prova:"p2",topic:"Katalon",diff:"easy",type:"mc",
+text:"[1,0] Em um script de teste em Katalon, qual anotação é usada para um método executado antes do início do teste (inicialização)?",
+options:["@Setup","@BeforeAll","@BeforeEach","@Before"],
+answer:0,
+exp:"No Katalon usa-se @Setup (e @TearDown ao final). @BeforeAll/@BeforeEach são anotações do JUnit, não do Katalon — confundi-las é a pegadinha do item B da P2."},
+
+{prova:"p2",topic:"Katalon",diff:"medium",type:"mc",
+text:"[1,0] Uma afirmação de prova diz: 'Em um script Katalon, um método anotado com @BeforeAll será executado uma única vez antes do início do teste.' Por que essa afirmação é FALSA?",
+options:["Porque @BeforeAll é uma anotação do JUnit; no Katalon a inicialização usa @Setup","Porque @BeforeAll executa após o teste","Porque o Katalon não permite inicialização","Porque @BeforeAll executa a cada item de dados"],
+answer:0,
+exp:"@BeforeAll pertence ao JUnit. No Katalon, o método de inicialização é anotado com @Setup. Por isso o item B da P2 tem gabarito F."},
+
+{prova:"p2",topic:"Katalon",diff:"medium",type:"mc",
+text:"[1,0] Em um formulário web, é preciso escolher uma opção de uma caixa de seleção (dropdown) pelo seu valor. Qual comando Katalon faz isso?",
+options:["WebUI.selectOptionByValue(findTestObject('Object Unidade'), 'C', false)","WebUI.setText(findTestObject('Object Unidade'), 'C')","WebUI.click(findTestObject('Object Unidade'))","WebUI.verifyOption(findTestObject('Object Unidade'), 'C')"],
+answer:0,
+exp:"WebUI.selectOptionByValue(objeto, valor, false) seleciona a <option> cujo value corresponde. setText serve para campos de texto, não para <select>."},
+
+{prova:"p2",topic:"Katalon",diff:"medium",type:"mc",
+text:"[1,0] Para verificar se um campo de entrada (input) exibe um valor esperado em seu atributo 'value', qual comando Katalon é adequado?",
+options:["WebUI.verifyElementAttributeValue(findTestObject('Object Celsius'), 'value', '23.30', 0)","WebUI.setText(findTestObject('Object Celsius'), '23.30')","WebUI.click(findTestObject('Object Celsius'))","WebUI.findText('Object Celsius', '23.30')"],
+answer:0,
+exp:"verifyElementAttributeValue(objeto, 'value', esperado, timeout) confere o atributo 'value' do elemento. setText preencheria o campo (errado: queremos verificar a saída)."},
+
+{prova:"p2",topic:"Katalon",diff:"medium",type:"mc",
+text:"[1,0] A especificação exige que o navegador seja fechado APENAS SE o teste tiver sido bem-sucedido (passou). Qual anotação Katalon deve conter o WebUI.closeBrowser()?",
+options:["@TearDownIfPassed","@TearDownIfError","@TearDownIfFailed","@Setup"],
+answer:0,
+exp:"@TearDownIfPassed executa o bloco SOMENTE quando o teste passa — exatamente o pedido pela P2. @TearDownIfError/@TearDownIfFailed executariam em falha; @TearDown (sem condição) executaria sempre."},
+
+{prova:"p2",topic:"Katalon",diff:"hard",type:"mc",
+text:"[1,0] No Katalon, qual a diferença entre @TearDown, @TearDownIfPassed e @TearDownIfError?",
+options:["@TearDown sempre executa ao final; @TearDownIfPassed só se passou; @TearDownIfError só se houve erro","Todos executam sempre, independentemente do resultado","@TearDown só executa se falhar; os demais nunca executam","@TearDownIfPassed executa antes do teste"],
+answer:0,
+exp:"@TearDown roda sempre; @TearDownIfPassed apenas em sucesso; @TearDownIfError (e @TearDownIfFailed) apenas em falha. Escolher a anotação certa conforme a condição de fechamento é cobrado em prova."},
+
+{prova:"p2",topic:"Katalon",diff:"medium",type:"tf",
+text:"[1,6] Assinale V ou F sobre o script Katalon do conversor de temperatura.",
+statements:[
+{text:"WebUI.openBrowser('http://conversor.temperatura.html') deve ficar no método @Setup.",answer:true},
+{text:"WebUI.selectOptionByValue é usado para escolher uma opção de uma caixa de seleção pelo seu valor.",answer:true},
+{text:"Para fechar o navegador apenas em caso de sucesso, usa-se @TearDownIfError.",answer:false},
+{text:"WebUI.verifyElementAttributeValue confere o atributo 'value' de um campo.",answer:true}
+],
+exp:"Fechar apenas em SUCESSO é @TearDownIfPassed (não @TearDownIfError, que é para falha). As demais afirmações estão corretas."},
+
+// ── Código: ConversorTemperaturaTest (@MethodSource) ──
+{prova:"p2",topic:"Testes Parametrizados",diff:"medium",type:"code",
+text:"[2,0] Implemente o método provedor de argumentos testConverter() para um @ParameterizedTest, retornando um Stream<Arguments> com os 3 casos: (orig, destino, esperado) = (new Temperatura(22.05, Unidade.CELSIUS), Unidade.FAHRENHEIT, new Temperatura(71.69, Unidade.FAHRENHEIT)); (new Temperatura(-200.23, Unidade.FAHRENHEIT), Unidade.KELVIN, new Temperatura(144.13, Unidade.KELVIN)); (new Temperatura(9.8, Unidade.KELVIN), Unidade.CELSIUS, new Temperatura(-263.35, Unidade.CELSIUS)).",
+answer:`public static Stream<Arguments> testConverter() {
+    Temperatura o1 = new Temperatura(22.05, Unidade.CELSIUS);
+    Temperatura o2 = new Temperatura(-200.23, Unidade.FAHRENHEIT);
+    Temperatura o3 = new Temperatura(9.8, Unidade.KELVIN);
+    Temperatura e1 = new Temperatura(71.69, Unidade.FAHRENHEIT);
+    Temperatura e2 = new Temperatura(144.13, Unidade.KELVIN);
+    Temperatura e3 = new Temperatura(-263.35, Unidade.CELSIUS);
+    return Stream.of(
+        Arguments.of(o1, Unidade.FAHRENHEIT, e1),
+        Arguments.of(o2, Unidade.KELVIN, e2),
+        Arguments.of(o3, Unidade.CELSIUS, e3)
+    );
+}`,
+keywords:["static","Stream<Arguments>","testConverter","Arguments.of","Stream.of","Temperatura"],
+exp:"O provedor é estático e retorna Stream<Arguments>; cada Arguments.of(orig, destino, esperado) vira um caso. Os parâmetros são injetados na ordem nos parâmetros do teste."},
+
+{prova:"p2",topic:"Testes Parametrizados",diff:"hard",type:"code",
+text:"[3,0] Considere as classes Temperatura (com getValor() e getUnidade()) e ConversorTemperatura (com o método estático converter(Temperatura t, Unidade destino)). Desenvolva o caso de teste JUnit 5 ConversorTemperaturaTest com um teste parametrizado testConverter que: receba (Temperatura orig, Unidade dest, Temperatura esp) de um método provedor @MethodSource; converta orig para dest; e verifique o valor (com tolerância de 1) e a unidade da temperatura convertida. Use o provedor com o mesmo nome do teste.",
+answer:`class ConversorTemperaturaTest {
+
+    public static Stream<Arguments> testConverter() {
+        Temperatura o1 = new Temperatura(22.05, Unidade.CELSIUS);
+        Temperatura o2 = new Temperatura(-200.23, Unidade.FAHRENHEIT);
+        Temperatura o3 = new Temperatura(9.8, Unidade.KELVIN);
+        Temperatura e1 = new Temperatura(71.69, Unidade.FAHRENHEIT);
+        Temperatura e2 = new Temperatura(144.13, Unidade.KELVIN);
+        Temperatura e3 = new Temperatura(-263.35, Unidade.CELSIUS);
+        return Stream.of(
+            Arguments.of(o1, Unidade.FAHRENHEIT, e1),
+            Arguments.of(o2, Unidade.KELVIN, e2),
+            Arguments.of(o3, Unidade.CELSIUS, e3)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    public void testConverter(Temperatura orig, Unidade dest, Temperatura esp) {
+        Temperatura convertida = ConversorTemperatura.converter(orig, dest);
+        assertEquals(esp.getValor(), convertida.getValor(), 1);
+        assertEquals(esp.getUnidade(), convertida.getUnidade());
+    }
+}`,
+keywords:["ConversorTemperaturaTest","@ParameterizedTest","@MethodSource","Stream<Arguments>","Arguments.of","ConversorTemperatura.converter","assertEquals","getValor","getUnidade"],
+exp:"Pontos-chave: provedor estático testConverter() com Stream<Arguments>; @MethodSource sem argumento (mesmo nome do teste); assertEquals do valor com tolerância 1 (delta) e assertEquals da unidade. Reproduz o gabarito da questão 3 da P2."},
+
+// ── Código: Katalon conversor de temperatura ──
+{prova:"p2",topic:"Katalon",diff:"medium",type:"code",
+text:"[2,0] Implemente o método @Setup de um script Katalon que abre o navegador em http://conversor.temperatura.html e o método de finalização que fecha o navegador APENAS se o teste tiver sido bem-sucedido.",
+answer:`@Setup
+void setUp() {
+    WebUI.openBrowser('http://conversor.temperatura.html')
+}
+
+@TearDownIfPassed
+void tearDown() {
+    WebUI.closeBrowser()
+}`,
+keywords:["@Setup","openBrowser","conversor.temperatura","@TearDownIfPassed","closeBrowser"],
+exp:"@Setup abre o navegador antes do teste; @TearDownIfPassed fecha SOMENTE em sucesso, conforme a especificação 'fechado apenas se bem-sucedido'."},
+
+{prova:"p2",topic:"Katalon",diff:"hard",type:"code",
+text:"[4,0] Considere o conversor de temperatura web com os elementos Object Temperatura (campo), Object Unidade (caixa de seleção), Object Celsius, Object Fahrenheit e Object Kelvin (campos de saída). Usando tipagem estática e boas práticas, desenvolva um script de caso de teste em Katalon que: abra o navegador em http://conversor.temperatura.html (no @Setup); para cada item da tabela atribua a temperatura e selecione a unidade, depois verifique os valores esperados em Celsius, Fahrenheit e Kelvin — (23.3,'C' → 23.30/73.94/296.30), (-40.2,'F' → -40.11/-40.20/232.89), (400,'K' → 127.00/260.60/400.00); e, ao término, feche o navegador apenas se o teste tiver sido bem-sucedido. Considere que o número de itens pode ser muito maior.",
+answer:`@Setup
+void setUp() {
+    WebUI.openBrowser('http://conversor.temperatura.html')
+}
+
+TestObject inpTemp       = findTestObject('Object Temperatura')
+TestObject selUnid       = findTestObject('Object Unidade')
+TestObject inpCelsius    = findTestObject('Object Celsius')
+TestObject inpFahrenheit = findTestObject('Object Fahrenheit')
+TestObject inpKelvin     = findTestObject('Object Kelvin')
+
+List<Tuple> dt = List.of(
+    new Tuple('23.3',  'C', '23.30',  '73.94',  '296.30'),
+    new Tuple('-40.2', 'F', '-40.11', '-40.20', '232.89'),
+    new Tuple('400',   'K', '127.00', '260.60', '400.00')
+)
+
+for (Tuple t : dt) {
+    WebUI.setText(inpTemp, t.get(0))
+    WebUI.selectOptionByValue(selUnid, t.get(1), false)
+    WebUI.verifyElementAttributeValue(inpCelsius,    'value', t.get(2), 0)
+    WebUI.verifyElementAttributeValue(inpFahrenheit, 'value', t.get(3), 0)
+    WebUI.verifyElementAttributeValue(inpKelvin,     'value', t.get(4), 0)
+}
+
+@TearDownIfPassed
+void tearDown() {
+    WebUI.closeBrowser()
+}`,
+keywords:["@Setup","openBrowser","conversor.temperatura","findTestObject","List","Tuple","for","setText","selectOptionByValue","verifyElementAttributeValue","@TearDownIfPassed","closeBrowser"],
+exp:"Reproduz o gabarito da questão 4 da P2. Pontos-chave: @Setup abre; laço sobre List<Tuple> (escalável); setText na temperatura, selectOptionByValue na unidade, verifyElementAttributeValue('value',...) em cada saída; @TearDownIfPassed fecha apenas em sucesso."}
+
+
 ]; // fim BANK
