@@ -84,7 +84,7 @@ h1 .hl{color:var(--accent)}
 .q-stripe.easy{background:var(--easy)}.q-stripe.medium{background:var(--medium)}.q-stripe.hard{background:var(--hard)}.q-stripe.code{background:var(--purple)}
 .q-body{padding:26px}
 .q-type-badge{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--purple);background:rgba(185,122,255,.1);border:1px solid rgba(185,122,255,.25);padding:3px 9px;border-radius:3px;display:inline-block;margin-bottom:12px}
-.q-text{font-size:16px;font-weight:600;line-height:1.65;color:#e8ecff;margin-bottom:18px}
+.q-text{font-size:16px;font-weight:600;line-height:1.65;color:#e8ecff;margin-bottom:18px;white-space:pre-wrap}
 pre.q-code{background:var(--code-bg);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:5px;padding:16px 18px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.75;color:#b8c4e8;overflow-x:auto;margin-bottom:22px;white-space:pre}
 
 /* MC options */

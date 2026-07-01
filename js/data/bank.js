@@ -54,7 +54,12 @@ statements:[
 exp:"Usabilidade exige avaliação humana — não pode ser automatizada. A ordem dos @Test é aleatória no JUnit 5, por isso cada teste deve ser independente."},
 
 {prova:"p2",topic:"Fundamentos",diff:"hard",type:"mc",
-text:"[1,0] Considere o método de teste abaixo. Qual boa prática está sendo violada?\n\n@Test\npublic void testSomarEMultiplicar() {\n    assertEquals(5, calc.somar(2, 3));\n    assertEquals(6, calc.multiplicar(2, 3));\n}",
+text:"[1,0] Considere o método de teste abaixo. Qual boa prática está sendo violada?",
+code:`@Test
+public void testSomarEMultiplicar() {
+    assertEquals(5, calc.somar(2, 3));
+    assertEquals(6, calc.multiplicar(2, 3));
+}`,
 options:["O método não utiliza @BeforeEach para inicializar calc","Um único @Test está verificando mais de um comportamento — deveriam ser dois métodos separados","assertEquals não pode ser utilizado com valores inteiros","O método deveria ser declarado como estático"],
 answer:1,
 exp:"Um @Test deve verificar apenas UM comportamento. Misturar somar e multiplicar dificulta isolar falhas. O correto seria ter testSomar() e testMultiplicar() separados."},
@@ -73,7 +78,7 @@ keywords:["CalculadoraTest"],
 exp:"Convenção: sufixo 'Test'. A classe pode ficar vazia — o que importa é a nomenclatura correta."},
 
 {prova:"p2",topic:"Fundamentos",diff:"medium",type:"code",
-text:"[2,0] Considere que a classe CalculadoraTest possui um atributo privado 'calc' do tipo Calculadora. Implemente o método de inicialização que deve ser executado antes de cada método de teste, inicializando 'calc' com new Calculadora().",
+text:"[2,0] Considere que a classe CalculadoraTest possui um atributo privado 'calc' do tipo Calculadora. Implemente o método de inicialização chamado setUp, que deve ser executado antes de cada método de teste, inicializando 'calc' com new Calculadora().",
 answer:`@BeforeEach
 public void setUp() {
     calc = new Calculadora();
@@ -82,7 +87,7 @@ keywords:["@BeforeEach","setUp","Calculadora"],
 exp:"@BeforeEach garante que cada @Test começa com um estado limpo. O método pode ter qualquer nome, mas setUp() é a convenção mais comum."},
 
 {prova:"p2",topic:"Fundamentos",diff:"hard",type:"code",
-text:"[3,0] Desenvolva a classe CalculadoraTest completa em JUnit 5, contendo: um atributo privado 'calc' do tipo Calculadora, um método @BeforeEach que inicializa 'calc', e um método @Test chamado testSomar que verifica que calc.somar(3, 7) retorna 10.",
+text:"[3,0] Desenvolva a classe CalculadoraTest completa em JUnit 5, contendo: um atributo privado 'calc' do tipo Calculadora, um método @BeforeEach chamado setUp que inicializa 'calc', e um método @Test chamado testSomar que verifica que calc.somar(3, 7) retorna 10.",
 answer:`public class CalculadoraTest {
     private Calculadora calc;
 
@@ -126,7 +131,12 @@ answer:2,
 exp:"@Disabled ignora o teste — ele não é executado e aparece como 'skipped' no relatório. Aceita mensagem explicativa: @Disabled('Aguardando implementação')."},
 
 {prova:"p2",topic:"Anotações JUnit",diff:"medium",type:"mc",
-text:"[1,0] Considere uma classe de teste JUnit 5 com os métodos anotados abaixo. Qual é a ordem CORRETA de execução para um único método @Test?\n\n@BeforeAll static void initAll()\n@BeforeEach void setUp()\n@Test void testX()\n@AfterEach void tearDown()\n@AfterAll static void closeAll()",
+text:"[1,0] Considere uma classe de teste JUnit 5 com os métodos anotados abaixo. Qual é a ordem CORRETA de execução para um único método @Test?",
+code:`@BeforeAll static void initAll()
+@BeforeEach void setUp()
+@Test void testX()
+@AfterEach void tearDown()
+@AfterAll static void closeAll()`,
 options:["@BeforeAll → @BeforeEach → @Test → @AfterAll → @AfterEach","@BeforeEach → @BeforeAll → @Test → @AfterEach → @AfterAll","@BeforeAll → @BeforeEach → @Test → @AfterEach → @AfterAll","@BeforeAll → @Test → @AfterAll → @BeforeEach → @AfterEach"],
 answer:2,
 exp:"Ordem: @BeforeAll (1×) → @BeforeEach → @Test → @AfterEach → @AfterAll (1×). @BeforeAll/@AfterAll envolvem toda a classe; @BeforeEach/@AfterEach envolvem cada @Test individualmente."},
@@ -148,7 +158,14 @@ statements:[
 exp:"@Disabled apenas ignora — não gera falha. @AfterEach é garantido mesmo em falha. Testes nunca devem depender de estado alheio pois a ordem é aleatória."},
 
 {prova:"p2",topic:"Anotações JUnit",diff:"hard",type:"mc",
-text:"[1,0] Considere a classe abaixo. O @Timeout do método testPerimetro1 está comentado. Qual é o limite de tempo efetivo desse método?\n\n@Timeout(value = 100, unit = TimeUnit.SECONDS)\nclass RetanguloTest {\n    @Test void testArea1() { }\n    @Test\n    //@Timeout(value = 1, unit = TimeUnit.MICROSECONDS)\n    void testPerimetro1() { }\n}",
+text:"[1,0] Considere a classe abaixo. O @Timeout do método testPerimetro1 está comentado. Qual é o limite de tempo efetivo desse método?",
+code:`@Timeout(value = 100, unit = TimeUnit.SECONDS)
+class RetanguloTest {
+    @Test void testArea1() { }
+    @Test
+    //@Timeout(value = 1, unit = TimeUnit.MICROSECONDS)
+    void testPerimetro1() { }
+}`,
 options:["1 microssegundo — o comentário ainda é processado","100 segundos — herda da classe pois o @Timeout do método está comentado","Sem limite — o comentário cancela o @Timeout da classe","Erro de compilação por conflito de anotações"],
 answer:1,
 exp:"O @Timeout está COMENTADO — sem efeito. testPerimetro1 herda os 100 segundos da classe. Um @Timeout ativo no método sobrescreveria o da classe."},
@@ -211,19 +228,35 @@ answer:2,
 exp:"assertNull(ref) verifica null. Ex: assertNull(cache.get('chave')) verifica que o cache retorna null para chave inexistente."},
 
 {prova:"p2",topic:"Asserções",diff:"medium",type:"mc",
-text:"[1,0] Considere o código abaixo. Qual é o problema na abordagem utilizada?\n\n@Test\nvoid testDivisaoPorZero() {\n    try {\n        calc.dividir(10, 0);\n    } catch (ArithmeticException e) {\n        // esperado\n    }\n}",
+text:"[1,0] Considere o código abaixo. Qual é o problema na abordagem utilizada?",
+code:`@Test
+void testDivisaoPorZero() {
+    try {
+        calc.dividir(10, 0);
+    } catch (ArithmeticException e) {
+        // esperado
+    }
+}`,
 options:["O catch deveria relançar a exceção com throw e","Se dividir(10,0) não lançar a exceção, o teste passa incorretamente","@Test não pode conter try/catch","ArithmeticException não é verificada em Java"],
 answer:1,
 exp:"Se o método não lançar exceção, o fluxo passa direto pelo try e o teste passa sem verificar nada. Solução: adicionar fail() após a chamada, ou usar assertThrows()."},
 
 {prova:"p2",topic:"Asserções",diff:"medium",type:"mc",
-text:"[1,0] Considere as duas asserções abaixo. Qual é a diferença entre assertEquals e assertSame?\n\nassertEquals(s1, s2);\nassertSame(s1, s2);",
+text:"[1,0] Considere as duas asserções abaixo. Qual é a diferença entre assertEquals e assertSame?",
+code:`assertEquals(s1, s2);
+assertSame(s1, s2);`,
 options:["assertEquals compara valor (.equals()); assertSame compara referência de memória (==)","Ambas comparam valor, mas assertSame é exclusiva para tipos primitivos","assertSame compara valor; assertEquals compara referência","assertEquals é mais rápido; assertSame é mais seguro"],
 answer:0,
 exp:"assertEquals: .equals() — compara conteúdo. assertSame: == — verifica se é o mesmo objeto na memória. new String('a') e new String('a') passam no assertEquals mas falham no assertSame."},
 
 {prova:"p2",topic:"Asserções",diff:"medium",type:"mc",
-text:"[1,0] Considere o teste abaixo. Por que o uso de != para comparar doubles é problemático nesse contexto?\n\n@Test\npublic void testPerimetro2() {\n    Retangulo ret = new Retangulo(22.3, 10.2);\n    if (ret.perimetro() != 65.0)\n        fail(\"PERÍMETRO INCORRETO!\");\n}",
+text:"[1,0] Considere o teste abaixo. Por que o uso de != para comparar doubles é problemático nesse contexto?",
+code:`@Test
+public void testPerimetro2() {
+    Retangulo ret = new Retangulo(22.3, 10.2);
+    if (ret.perimetro() != 65.0)
+        fail("PERÍMETRO INCORRETO!");
+}`,
 options:["fail() não pode ser chamado dentro de um if","Comparar doubles com != é arriscado — 22.3×2 + 10.2×2 pode retornar 65.00000000000001 em ponto flutuante","assertEquals aceita mais tipos de dado que !=","O uso de != com double gera erro de compilação"],
 answer:1,
 exp:"Aritmética IEEE 754 é imprecisa. O resultado pode ser 65.00000000000001. assertEquals(65.0, ret.perimetro(), 0.001) é mais robusto por aceitar tolerância."},
@@ -239,7 +272,11 @@ statements:[
 exp:"assertDoesNotThrow verifica que NENHUMA exceção é lançada — oposto de assertThrows. assertFalse evita dupla negação, expressando diretamente a intenção."},
 
 {prova:"p2",topic:"Asserções",diff:"hard",type:"mc",
-text:"[1,0] Considere o código abaixo. Qual linha está sendo utilizada INCORRETAMENTE?\n\nString s1 = new String(\"abc\");\nString s2 = new String(\"abc\");\nassertSame(s1, s2);   // linha A\nassertEquals(s1, s2); // linha B",
+text:"[1,0] Considere o código abaixo. Qual linha está sendo utilizada INCORRETAMENTE?",
+code:`String s1 = new String("abc");
+String s2 = new String("abc");
+assertSame(s1, s2);   // linha A
+assertEquals(s1, s2); // linha B`,
 options:["Linha A — assertSame falha pois s1 e s2 são objetos distintos na heap","Linha B — assertEquals falha pois os conteúdos são diferentes","Ambas estão corretas","Ambas estão incorretas"],
 answer:0,
 exp:"new String('abc') cria objetos DISTINTOS na heap. assertSame(==) falha. assertEquals(.equals()) passa pois os conteúdos são iguais. Linha A está incorreta para esse cenário."},
@@ -284,7 +321,13 @@ keywords:["@Test","assertSame","getInstance"],
 exp:"assertSame usa == — verifica identidade de referência. Perfeito para Singleton: duas chamadas devem retornar o mesmo objeto na memória, não apenas objetos iguais em valor."},
 
 {prova:"p2",topic:"Asserções",diff:"hard",type:"code",
-text:"[3,0] Considere a classe abaixo, que representa um teste de divisão. O código atual tem um problema grave: se calc.dividir(10, 0) não lançar a exceção, o teste passa incorretamente. De acordo com as especificações abaixo, reescreva o teste de forma CORRETA utilizando assertThrows.\n\n// Versão incorreta:\n@Test\nvoid testDivisaoPorZero() {\n    try { calc.dividir(10, 0); }\n    catch (ArithmeticException e) { }\n}",
+text:"[3,0] Considere a classe abaixo, que representa um teste de divisão. O código atual tem um problema grave: se calc.dividir(10, 0) não lançar a exceção, o teste passa incorretamente. De acordo com as especificações abaixo, reescreva o teste de forma CORRETA utilizando assertThrows.",
+code:`// Versão incorreta:
+@Test
+void testDivisaoPorZero() {
+    try { calc.dividir(10, 0); }
+    catch (ArithmeticException e) { }
+}`,
 answer:`@Test
 public void testDivisaoPorZero() {
     assertThrows(ArithmeticException.class,
@@ -410,7 +453,13 @@ answer:1,
 exp:"@CsvSource({'5,10','2,4'}) define tuplas inline no código. @CsvFileSource lê de arquivo externo."},
 
 {prova:"p2",topic:"Testes Parametrizados",diff:"medium",type:"mc",
-text:"[1,0] Considere o método de teste abaixo. Quantas vezes ele será executado?\n\n@ParameterizedTest\n@ValueSource(doubles = { -2, -1000, -10.8, 0, -0.02 })\npublic void testAlturaInvalida(double h) {\n    assertThrows(GeometriaException.class,\n        () -> new Retangulo(1, h));\n}",
+text:"[1,0] Considere o método de teste abaixo. Quantas vezes ele será executado?",
+code:`@ParameterizedTest
+@ValueSource(doubles = { -2, -1000, -10.8, 0, -0.02 })
+public void testAlturaInvalida(double h) {
+    assertThrows(GeometriaException.class,
+        () -> new Retangulo(1, h));
+}`,
 options:["1 vez com todos os valores simultâneos","3 vezes","5 vezes","10 vezes"],
 answer:2,
 exp:"@ValueSource tem 5 valores. @ParameterizedTest executa uma vez por valor → 5 execuções independentes."},
@@ -422,7 +471,10 @@ answer:3,
 exp:"numLinesToSkip=4 pula as 4 primeiras linhas. 'beginInLine' e 'skipLines' não existem no JUnit 5."},
 
 {prova:"p2",topic:"Testes Parametrizados",diff:"medium",type:"mc",
-text:"[1,0] Considere o código abaixo. Por que @MethodSource é necessário nesse caso?\n\n@ParameterizedTest\n@MethodSource(\"dados\")\nvoid testArea(Circulo base, double h, double res) { }",
+text:"[1,0] Considere o código abaixo. Por que @MethodSource é necessário nesse caso?",
+code:`@ParameterizedTest
+@MethodSource("dados")
+void testArea(Circulo base, double h, double res) { }`,
 options:["@CsvSource seria mais lento para muitos dados","@MethodSource permite passar objetos instanciados; @CsvSource só aceita valores literais","@CsvSource não suporta parâmetros do tipo double","@MethodSource é obrigatório quando há mais de 2 parâmetros"],
 answer:1,
 exp:"@CsvSource aceita apenas tipos primitivos/strings. Para passar objetos como Circulo, é necessário @MethodSource."},
@@ -444,7 +496,13 @@ statements:[
 exp:"@ValueSource: UM valor simples por execução. 'beginInLine' não existe — o atributo correto é numLinesToSkip."},
 
 {prova:"p2",topic:"Testes Parametrizados",diff:"hard",type:"mc",
-text:"[1,0] Um arquivo 'dados.csv' tem 4 linhas de cabeçalho e usa '~' como separador. Qual anotação está CORRETA para carregar esse arquivo em um @ParameterizedTest?\n\n// dados.csv:\n// linha 1: TRAPÉZIO\n// linha 2: DADOS DE TESTE\n// linha 3: BME | BMA | LE | LD | R\n// linha 4: (vazio)\n// linha 5: 5 ~ 2 ~ 4 ~ 6 ~ 17",
+text:"[1,0] Um arquivo 'dados.csv' tem 4 linhas de cabeçalho e usa '~' como separador. Qual anotação está CORRETA para carregar esse arquivo em um @ParameterizedTest?",
+code:`// dados.csv:
+// linha 1: TRAPÉZIO
+// linha 2: DADOS DE TESTE
+// linha 3: BME | BMA | LE | LD | R
+// linha 4: (vazio)
+// linha 5: 5 ~ 2 ~ 4 ~ 6 ~ 17`,
 options:[
 '@CsvFileSource(file="dados.csv", delimiter=\'~\', numLinesToSkip=4)',
 '@CsvSource(files={"dados.csv"}, delimiter=\'~\', numLinesToSkip=4)',
@@ -491,35 +549,36 @@ answer:`private static Stream<Arguments> dataTestPerimetro() {
 keywords:["static","Stream","Arguments","Retangulo","76","65"],
 exp:"Método estático retornando Stream<Arguments>. Arguments.of() empacota cada caso. Permite passar objetos instanciados — impossível com @CsvSource."},
 
-{prova:"p2",topic:"Testes Parametrizados",diff:"hard",type:"code",
-text:"[3,0] Considere a classe Coordenada com atributos x, y, z (double) e a classe CoordenadaJSON com o método estático JSONParaCoordenada(String json) que converte texto JSON em objeto Coordenada. De acordo com as especificações abaixo, desenvolva a classe de teste CoordenadaJSONTest em JUnit 5, contendo:\n\nA) Um método de provimento testJSONParaCoordenadaData() que fornece os seguintes pares (json, Coordenada esperada):\n   1. '{ x : -98.43 , y : 2.2 , z : -8.9 }' → Coordenada(-98.43, 2.2, -8.9)\n   2. '{ x:21, y: 100.2, z:189 }' → Coordenada(21, 100.2, 189)\n   3. '{x:174.22,y:-982,z:890.8}' → Coordenada(174.22, -982, 890.8)\n\nB) Um @ParameterizedTest chamado testJSONParaCoordenada que recebe (String json, Coordenada obj), converte o json e verifica os três atributos com assertEquals.\n\nDica: os argumentos providos por métodos podem ser objetos.",
-answer:`class CoordenadaJSONTest {
-
-    public static Stream<Arguments> testJSONParaCoordenadaData() {
-        String c1j = "{ x : -98.43 , y : 2.2 , z : -8.9 }";
-        Coordenada c1o = new Coordenada(-98.43, 2.2, -8.9);
-        String c2j = "{ x:21, y: 100.2, z:189 }";
-        Coordenada c2o = new Coordenada(21, 100.2, 189);
-        String c3j = "{x:174.22,y:-982,z:890.8}";
-        Coordenada c3o = new Coordenada(174.22, -982, 890.8);
-        return Stream.of(
-            Arguments.of(c1j, c1o),
-            Arguments.of(c2j, c2o),
-            Arguments.of(c3j, c3o)
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("testJSONParaCoordenadaData")
-    public void testJSONParaCoordenada(String json, Coordenada obj) {
-        Coordenada c = CoordenadaJSON.JSONParaCoordenada(json);
-        assertEquals(obj.getX(), c.getX());
-        assertEquals(obj.getY(), c.getY());
-        assertEquals(obj.getZ(), c.getZ());
-    }
+{prova:"p2",topic:"Testes Parametrizados",diff:"medium",type:"code",
+text:"[1,5] Considere a classe Coordenada (atributos x, y, z double) e a classe CoordenadaJSON. Implemente APENAS o método de provimento de argumentos chamado testJSONParaCoordenadaData(), para uso com @MethodSource, que retorna um Stream<Arguments> com os pares (json, Coordenada esperada):\n   1. '{ x : -98.43 , y : 2.2 , z : -8.9 }' → Coordenada(-98.43, 2.2, -8.9)\n   2. '{ x:21, y: 100.2, z:189 }' → Coordenada(21, 100.2, 189)\n   3. '{x:174.22,y:-982,z:890.8}' → Coordenada(174.22, -982, 890.8)\nDica: os argumentos providos por métodos podem ser objetos.",
+answer:`public static Stream<Arguments> testJSONParaCoordenadaData() {
+    String c1j = "{ x : -98.43 , y : 2.2 , z : -8.9 }";
+    Coordenada c1o = new Coordenada(-98.43, 2.2, -8.9);
+    String c2j = "{ x:21, y: 100.2, z:189 }";
+    Coordenada c2o = new Coordenada(21, 100.2, 189);
+    String c3j = "{x:174.22,y:-982,z:890.8}";
+    Coordenada c3o = new Coordenada(174.22, -982, 890.8);
+    return Stream.of(
+        Arguments.of(c1j, c1o),
+        Arguments.of(c2j, c2o),
+        Arguments.of(c3j, c3o)
+    );
 }`,
-keywords:["Stream","Arguments","Arguments.of","@ParameterizedTest","@MethodSource","testJSONParaCoordenadaData","assertEquals","getX","getY","getZ"],
-exp:"Reprodução fiel da questão 3 da prova. Pontos-chave: método de provimento retorna Stream<Arguments> com Arguments.of(json, objeto); @MethodSource referencia pelo nome; @ParameterizedTest recebe (String, Coordenada); três assertEquals para cada atributo."},
+keywords:["static","Stream","Arguments","Arguments.of","testJSONParaCoordenadaData"],
+exp:"O método de provimento é estático e retorna Stream<Arguments>; cada Arguments.of(json, objeto) é um caso de teste. Os argumentos providos por método podem ser objetos (aqui, Coordenada)."},
+
+{prova:"p2",topic:"Testes Parametrizados",diff:"hard",type:"code",
+text:"[1,5] Considere a classe Coordenada (com getX(), getY(), getZ()) e a classe CoordenadaJSON com o método estático JSONParaCoordenada(String json). Supondo que já exista o método de provimento testJSONParaCoordenadaData(), implemente o @ParameterizedTest chamado testJSONParaCoordenada que recebe (String json, Coordenada obj), converte o json com CoordenadaJSON.JSONParaCoordenada e verifica os três atributos (x, y, z) com assertEquals.",
+answer:`@ParameterizedTest
+@MethodSource("testJSONParaCoordenadaData")
+public void testJSONParaCoordenada(String json, Coordenada obj) {
+    Coordenada c = CoordenadaJSON.JSONParaCoordenada(json);
+    assertEquals(obj.getX(), c.getX());
+    assertEquals(obj.getY(), c.getY());
+    assertEquals(obj.getZ(), c.getZ());
+}`,
+keywords:["@ParameterizedTest","@MethodSource","testJSONParaCoordenada","JSONParaCoordenada","assertEquals","getX","getY","getZ"],
+exp:"@ParameterizedTest + @MethodSource(\"testJSONParaCoordenadaData\") injeta cada par (String, Coordenada). Converte-se o json e compara-se cada atributo com assertEquals. Esta é a metade 'consumidora' do teste parametrizado."},
 
 {prova:"p2",topic:"Testes Parametrizados",diff:"hard",type:"code",
 text:"[3,0] Considere a classe Cilindro com o método area() e a classe Circulo(double raio). De acordo com as especificações abaixo, desenvolva o método de provimento dataTestArea() e o método @ParameterizedTest testArea para a classe CilindroTest, conforme os dados:\n   - Circulo(4), altura=8, resultado esperado=301.59\n   - Circulo(10.72), altura=5.4, resultado esperado=1085.77\n   - Circulo(1), altura=2.3, resultado esperado=20.73\nO teste deve verificar o resultado com tolerância 0.001.",
@@ -577,7 +636,10 @@ answer:3,
 exp:"@SelectPackages({'pacote'}) inclui automaticamente todas as classes de teste do pacote, inclusive novas adicionadas futuramente. @SelectClasses exige listagem manual."},
 
 {prova:"p2",topic:"Suíte de Testes",diff:"easy",type:"mc",
-text:"[1,0] Considere a classe abaixo. O que ela representa e qual é sua característica mais importante?\n\n@Suite\n@SelectPackages({\"testes\"})\nclass GeometriaTestSuite { }",
+text:"[1,0] Considere a classe abaixo. O que ela representa e qual é sua característica mais importante?",
+code:`@Suite
+@SelectPackages({"testes"})
+class GeometriaTestSuite { }`,
 options:["Classe de teste normal que verifica o pacote 'testes'","Suíte que executa todos os testes do pacote 'testes' — a classe pode ficar vazia","Inválida — suítes precisam de pelo menos um @Test","Executa apenas GeometriaTestSuite e ignora os demais"],
 answer:1,
 exp:"GeometriaTestSuite é uma suíte. A classe pode ficar completamente vazia — sua função é apenas carregar as anotações. Executa todos os @Test do pacote 'testes'."},
@@ -671,31 +733,64 @@ exp:"Suíte profissional: package correto + imports das três anotações + @Sui
 // ══════════════════ ANÁLISE DE CÓDIGO ══════════════════
 
 {prova:"p2",topic:"Análise de Código",diff:"easy",type:"mc",
-text:"[1,0] Considere o método abaixo. Qual é o papel do @BeforeEach setUp()?\n\n@BeforeEach\npublic void setUp() {\n    dados = new ArrayList<Double[]>();\n    dados.add(new Double[]{ 10.0, 314.16, 62.8 });\n}",
+text:"[1,0] Considere o método abaixo. Qual é o papel do @BeforeEach setUp()?",
+code:`@BeforeEach
+public void setUp() {
+    dados = new ArrayList<Double[]>();
+    dados.add(new Double[]{ 10.0, 314.16, 62.8 });
+}`,
 options:["Executado uma única vez, define dados globais permanentes para todos os testes","Executado antes de cada @Test, garantindo que cada teste começa com uma lista de dados limpa","Executado após cada @Test para validar os resultados","Define constantes compartilhadas entre todas as classes de teste"],
 answer:1,
 exp:"@BeforeEach garante estado limpo para cada @Test. Sem ele, um teste que modificar 'dados' afetaria os seguintes."},
 
 {prova:"p2",topic:"Análise de Código",diff:"medium",type:"mc",
-text:"[1,0] Considere o código abaixo. O que o método testSetBase1() está verificando?\n\n@Test\npublic void testSetBase1() {\n    Retangulo ret = new Retangulo(2, 2);\n    assertThrows(GeometriaException.class,\n        () -> { ret.setBase(-12); });\n    assertThrows(GeometriaException.class,\n        () -> { new Retangulo(0, 10); });\n}",
+text:"[1,0] Considere o código abaixo. O que o método testSetBase1() está verificando?",
+code:`@Test
+public void testSetBase1() {
+    Retangulo ret = new Retangulo(2, 2);
+    assertThrows(GeometriaException.class,
+        () -> { ret.setBase(-12); });
+    assertThrows(GeometriaException.class,
+        () -> { new Retangulo(0, 10); });
+}`,
 options:["Que -12 e 0 são valores válidos para a base","Que setBase(-12) e o construtor Retangulo(0,10) lançam GeometriaException — testando setter e construtor","Que GeometriaException é subclasse de RuntimeException","Que o retângulo tem base igual a -12 após o set"],
 answer:1,
 exp:"Dois assertThrows: setter (setBase(-12)) e construtor (Retangulo(0,10)). Ambos validam que valores inválidos são rejeitados com GeometriaException."},
 
 {prova:"p2",topic:"Análise de Código",diff:"medium",type:"mc",
-text:"[1,0] Considere o código abaixo. Qual é o problema na abordagem de comparação utilizada?\n\n@Test\npublic void testPerimetro2() {\n    Retangulo ret = new Retangulo(22.3, 10.2);\n    if (ret.perimetro() != 65.0)\n        fail(\"PERÍMETRO INCORRETO!\");\n}",
+text:"[1,0] Considere o código abaixo. Qual é o problema na abordagem de comparação utilizada?",
+code:`@Test
+public void testPerimetro2() {
+    Retangulo ret = new Retangulo(22.3, 10.2);
+    if (ret.perimetro() != 65.0)
+        fail("PERÍMETRO INCORRETO!");
+}`,
 options:["O valor esperado 65.0 está matematicamente incorreto","Comparar doubles com != é arriscado — 22.3×2 + 10.2×2 pode retornar 65.00000000000001 em ponto flutuante","fail() não pode ser chamado dentro de um if","Retangulo(22.3, 10.2) não é uma instância válida"],
 answer:1,
 exp:"IEEE 754: o resultado pode ser 65.00000000000001. assertEquals(65.0, ret.perimetro(), 0.001) é mais robusto."},
 
 {prova:"p2",topic:"Análise de Código",diff:"medium",type:"mc",
-text:"[1,0] Considere o código abaixo do CilindroTest. Por que dataTestVolume() usa Stream<Object[]> ao invés de Stream<Arguments>?\n\npublic static Stream<Object[]> dataTestVolume() {\n    return Stream.of(\n        new Object[]{ new Cilindro(new Circulo(6.7), 2.2), 310.26 }\n    );\n}",
+text:"[1,0] Considere o código abaixo do CilindroTest. Por que dataTestVolume() usa Stream<Object[]> ao invés de Stream<Arguments>?",
+code:`public static Stream<Object[]> dataTestVolume() {
+    return Stream.of(
+        new Object[]{ new Cilindro(new Circulo(6.7), 2.2), 310.26 }
+    );
+}`,
 options:["Stream<Object[]> é obrigatório para objetos instanciados","São formas equivalentes — @MethodSource aceita ambas","Stream<Arguments> não suporta objetos customizados","Stream<Object[]> usa menos memória"],
 answer:1,
 exp:"@MethodSource aceita Stream<Arguments> e Stream<Object[]> igualmente. Arguments.of() é mais idiomático, mas ambas funcionam."},
 
 {prova:"p2",topic:"Análise de Código",diff:"hard",type:"mc",
-text:"[1,0] Considere o trecho do CirculoTest abaixo. Por que o @Test testArea utiliza assertTrue em vez de assertEquals?\n\n@Test\npublic void testArea() {\n    for (Double dt[] : dados) {\n        Circulo c = new Circulo(dt[RAIO_IND]);\n        double area = c.area();\n        if (!(area>=dt[AREA_IND]-0.3 && area<=dt[AREA_IND]+0.3))\n            throw new AssertionError();\n    }\n}",
+text:"[1,0] Considere o trecho do CirculoTest abaixo. Por que o @Test testArea utiliza assertTrue em vez de assertEquals?",
+code:`@Test
+public void testArea() {
+    for (Double dt[] : dados) {
+        Circulo c = new Circulo(dt[RAIO_IND]);
+        double area = c.area();
+        if (!(area>=dt[AREA_IND]-0.3 && area<=dt[AREA_IND]+0.3))
+            throw new AssertionError();
+    }
+}`,
 options:["assertEquals não aceita doubles","A tolerância é uma faixa ±0.3 verificada manualmente com if — alternativa ao assertEquals com delta","assertTrue é sempre preferível a assertEquals","O código está errado — deveria usar assertEquals(dt[AREA_IND], area, 0.3)"],
 answer:1,
 exp:"O código original verifica a faixa manualmente com if + throw. É equivalente a assertEquals(dt[AREA_IND], area, 0.3) — ambas as abordagens validam tolerância de ±0.3."},
@@ -802,7 +897,12 @@ statements:[
 exp:"WebUI.findText() VERIFICA se texto existe — não preenche. Para preencher: WebUI.setText(). A confusão entre os dois é a pegadinha mais frequente em provas."},
 
 {prova:"p2",topic:"Katalon",diff:"hard",type:"mc",
-text:"[1,0] Considere o script abaixo. Qual erro ele contém em relação à especificação 'o navegador deve ser fechado apenas se o teste for bem-sucedido'?\n\n@Setup\ndef setUp() { WebUI.openBrowser('http://json.cordenada.html') }\n\n@TearDownIfError\ndef tearDown() { WebUI.closeBrowser() }",
+text:"[1,0] Considere o script abaixo. Qual erro ele contém em relação à especificação 'o navegador deve ser fechado apenas se o teste for bem-sucedido'?",
+code:`@Setup
+def setUp() { WebUI.openBrowser('http://json.cordenada.html') }
+
+@TearDownIfError
+def tearDown() { WebUI.closeBrowser() }`,
 options:["Não há erros — o script está correto","@TearDownIfError fecha o browser quando FALHA, mas a especificação pede fechar somente quando PASSA","WebUI.openBrowser() não pode ficar no @Setup","closeBrowser() não existe no Katalon"],
 answer:1,
 exp:"@TearDownIfError executa após FALHA. Para fechar após SUCESSO → @TearDown. Trocar os dois é o erro mais cobrado em prova sobre Katalon."},
@@ -983,35 +1083,36 @@ def tearDown() {
 keywords:["@Setup","openBrowser","@TearDown","closeBrowser"],
 exp:"@Setup abre. @TearDown fecha após SUCESSO. Estrutura base de todo script Katalon."},
 
-{prova:"p2",topic:"Revisão",diff:"hard",type:"code",
-text:"[5,0] Considere a classe Coordenada (atributos double x, y, z com getters) e a classe CoordenadaJSON com o método estático JSONParaCoordenada(String json). De acordo com as especificações abaixo, desenvolva a classe de teste CoordenadaJSONTest em JUnit 5 contendo:\nA) Método de provimento testJSONParaCoordenadaData() com os pares:\n   '{ x : -98.43 , y : 2.2 , z : -8.9 }' → Coordenada(-98.43, 2.2, -8.9)\n   '{ x:21, y: 100.2, z:189 }' → Coordenada(21, 100.2, 189)\n   '{x:174.22,y:-982,z:890.8}' → Coordenada(174.22, -982, 890.8)\nB) @ParameterizedTest testJSONParaCoordenada que converte o JSON e verifica os 3 atributos com assertEquals.\nDica: os argumentos providos por métodos podem ser objetos.",
-answer:`class CoordenadaJSONTest {
-
-    public static Stream<Arguments> testJSONParaCoordenadaData() {
-        String c1j = "{ x : -98.43 , y : 2.2 , z : -8.9 }";
-        Coordenada c1o = new Coordenada(-98.43, 2.2, -8.9);
-        String c2j = "{ x:21, y: 100.2, z:189 }";
-        Coordenada c2o = new Coordenada(21, 100.2, 189);
-        String c3j = "{x:174.22,y:-982,z:890.8}";
-        Coordenada c3o = new Coordenada(174.22, -982, 890.8);
-        return Stream.of(
-            Arguments.of(c1j, c1o),
-            Arguments.of(c2j, c2o),
-            Arguments.of(c3j, c3o)
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("testJSONParaCoordenadaData")
-    public void testJSONParaCoordenada(String json, Coordenada obj) {
-        Coordenada c = CoordenadaJSON.JSONParaCoordenada(json);
-        assertEquals(obj.getX(), c.getX());
-        assertEquals(obj.getY(), c.getY());
-        assertEquals(obj.getZ(), c.getZ());
-    }
+{prova:"p2",topic:"Revisão",diff:"medium",type:"code",
+text:"[2,0] Revisão — provimento de argumentos com objetos. Considere a classe Coordenada (atributos double x, y, z). Implemente APENAS o método de provimento testJSONParaCoordenadaData() (para @MethodSource), retornando Stream<Arguments> com os pares (json, Coordenada esperada):\n   '{ x : -98.43 , y : 2.2 , z : -8.9 }' → Coordenada(-98.43, 2.2, -8.9)\n   '{ x:21, y: 100.2, z:189 }' → Coordenada(21, 100.2, 189)\n   '{x:174.22,y:-982,z:890.8}' → Coordenada(174.22, -982, 890.8)",
+answer:`public static Stream<Arguments> testJSONParaCoordenadaData() {
+    String c1j = "{ x : -98.43 , y : 2.2 , z : -8.9 }";
+    Coordenada c1o = new Coordenada(-98.43, 2.2, -8.9);
+    String c2j = "{ x:21, y: 100.2, z:189 }";
+    Coordenada c2o = new Coordenada(21, 100.2, 189);
+    String c3j = "{x:174.22,y:-982,z:890.8}";
+    Coordenada c3o = new Coordenada(174.22, -982, 890.8);
+    return Stream.of(
+        Arguments.of(c1j, c1o),
+        Arguments.of(c2j, c2o),
+        Arguments.of(c3j, c3o)
+    );
 }`,
-keywords:["Stream","Arguments","Arguments.of","@ParameterizedTest","@MethodSource","testJSONParaCoordenadaData","assertEquals","getX","getY","getZ"],
-exp:"Reprodução exata da questão 3 da prova. Pontos críticos: método de provimento retorna Stream<Arguments> com Arguments.of(json, objeto Coordenada); @MethodSource referencia pelo nome; três assertEquals verificam cada atributo individualmente."}
+keywords:["static","Stream","Arguments","Arguments.of","testJSONParaCoordenadaData"],
+exp:"Provedor estático retornando Stream<Arguments>; cada Arguments.of(json, objeto) é um caso. Argumentos providos por método podem ser objetos completos (Coordenada)."},
+
+{prova:"p2",topic:"Revisão",diff:"hard",type:"code",
+text:"[2,0] Revisão — consumo do provedor. Considere a classe Coordenada (com getX(), getY(), getZ()) e CoordenadaJSON.JSONParaCoordenada(String json). Supondo que já exista o provedor testJSONParaCoordenadaData(), implemente o @ParameterizedTest chamado testJSONParaCoordenada que recebe (String json, Coordenada obj), converte o json e verifica os 3 atributos com assertEquals.",
+answer:`@ParameterizedTest
+@MethodSource("testJSONParaCoordenadaData")
+public void testJSONParaCoordenada(String json, Coordenada obj) {
+    Coordenada c = CoordenadaJSON.JSONParaCoordenada(json);
+    assertEquals(obj.getX(), c.getX());
+    assertEquals(obj.getY(), c.getY());
+    assertEquals(obj.getZ(), c.getZ());
+}`,
+keywords:["@ParameterizedTest","@MethodSource","testJSONParaCoordenada","JSONParaCoordenada","assertEquals","getX","getY","getZ"],
+exp:"@ParameterizedTest + @MethodSource(\"testJSONParaCoordenadaData\") injeta cada par (String, Coordenada); converte-se o json e comparam-se os três atributos com assertEquals."}
 
 
 // ═══ P1 — FUNDAMENTOS DO TESTE DE SOFTWARE ═══
@@ -1896,7 +1997,12 @@ keywords:["@ParameterizedTest","@ValueSource","ints","testEhParNegativo","assert
 exp:"@ValueSource(ints = {...}) fornece inteiros como argumentos simples; assertThrows confirma que cada valor negativo dispara IllegalArgumentException."},
 
 {prova:"pf",topic:"Análise de Código",diff:"hard",type:"mc",
-text:"[1,0] No teste parametrizado abaixo, por que ele FALHA na compilação?\n\n@ParameterizedTest\n@ValueSource(strings = {\"a\", \"b\"})\npublic void testX() {\n    assertNotNull(\"a\");\n}",
+text:"[1,0] No teste parametrizado abaixo, por que ele FALHA na compilação?",
+code:`@ParameterizedTest
+@ValueSource(strings = {"a", "b"})
+public void testX() {
+    assertNotNull("a");
+}`,
 options:["Falta a anotação @Test","O método parametrizado não declara o parâmetro que recebe cada valor (ex.: String s)","@ValueSource não aceita strings","assertNotNull não existe"],
 answer:1,
 exp:"Um @ParameterizedTest com @ValueSource(strings=...) deve receber o valor como parâmetro: public void testX(String s). Sem o parâmetro, não há onde injetar cada literal."},
@@ -2229,6 +2335,134 @@ void tearDown() {
 }`,
 keywords:["@Setup","openBrowser","conversor.temperatura","findTestObject","List","Tuple","for","setText","selectOptionByValue","verifyElementAttributeValue","@TearDownIfPassed","closeBrowser"],
 exp:"Reproduz o gabarito da questão 4 da P2. Pontos-chave: @Setup abre; laço sobre List<Tuple> (escalável); setText na temperatura, selectOptionByValue na unidade, verifyElementAttributeValue('value',...) em cada saída; @TearDownIfPassed fecha apenas em sucesso."}
+
+
+// ══════════════════ P1 — PEGADINHAS (Cap. 1 a 15) ══════════════════
+// Questões "casca de banana" no estilo das provas, focadas em P1
+
+,{prova:"p1",topic:"Princípios do Teste",diff:"medium",type:"tf",
+text:"[1,6] Assinale V para as verdadeiras e F para as falsas sobre os princípios gerais de teste.",
+statements:[
+{text:"Os testes podem provar que um software está completamente livre de defeitos.",answer:false},
+{text:"O teste exaustivo (testar todas as entradas e condições) é impraticável, exceto em casos triviais.",answer:true},
+{text:"Encontrar e corrigir muitos defeitos garante, por si só, o sucesso do produto junto ao usuário.",answer:false},
+{text:"Repetir sempre os mesmos casos de teste tende a deixar de encontrar novos defeitos (paradoxo do pesticida).",answer:true}
+],
+exp:"Pegadinhas clássicas: testes mostram a PRESENÇA de defeitos, nunca provam a ausência. Corrigir muitos defeitos não basta se o sistema não atende à necessidade (falácia da ausência de erros). O teste exaustivo é inviável e o paradoxo do pesticida é real."},
+
+{prova:"p1",topic:"Princípios do Teste",diff:"hard",type:"mc",
+text:"[1,0] Assinale a alternativa que NÃO corresponde a um princípio geral de teste de software.",
+options:["Testar mostra a presença de defeitos, não a sua ausência","Testar antecipadamente (early testing) economiza tempo e dinheiro","Um software sem defeitos conhecidos é sempre um sucesso garantido","Os defeitos tendem a se agrupar em poucos módulos (defect clustering)"],
+answer:2,
+exp:"A afirmação sobre 'software sem defeitos = sucesso garantido' é justamente a FALÁCIA da ausência de erros — o oposto de um princípio. Um sistema pode estar sem defeitos e ainda assim ser inútil se não atender às necessidades do usuário."},
+
+{prova:"p1",topic:"Qualidade de Software",diff:"medium",type:"mc",
+text:"[1,0] Uma equipe corrigiu todos os defeitos encontrados, mas o cliente recusou o produto por não atender ao que precisava. Qual princípio de teste explica essa situação?",
+options:["Falácia da ausência de erros: corrigir defeitos não garante um produto útil se ele não atende aos requisitos do usuário","Paradoxo do pesticida","Teste exaustivo é impossível","Agrupamento de defeitos"],
+answer:0,
+exp:"A 'ausência de erros' é uma falácia: um software pode estar tecnicamente correto e mesmo assim falhar em atender às necessidades reais do usuário. Qualidade vai além de não ter bugs."},
+
+{prova:"p1",topic:"Defeitos de Software",diff:"medium",type:"tf",
+text:"[1,6] Assinale V ou F sobre a terminologia de defeitos (engano, defeito, erro, falha).",
+statements:[
+{text:"O engano (mistake) é cometido por um ser humano e pode introduzir um defeito no código.",answer:true},
+{text:"Todo defeito presente no código necessariamente se manifesta como uma falha durante a execução.",answer:false},
+{text:"Falha (failure) é o comportamento incorreto observável do software em execução.",answer:true},
+{text:"Defeito e falha são termos sinônimos e intercambiáveis.",answer:false}
+],
+exp:"Pegadinha: nem todo defeito vira falha — só se o trecho defeituoso for executado com os dados que disparam o problema. Defeito (causa, no código) ≠ falha (efeito observável). Engano(humano) → defeito → erro(estado) → falha."},
+
+{prova:"p1",topic:"Defeitos de Software",diff:"hard",type:"mc",
+text:"[1,0] Assinale a afirmação INCORRETA sobre defeitos e falhas de software.",
+options:["Um defeito pode existir no código sem nunca gerar uma falha observável","Uma falha é a manifestação, em execução, de um defeito","Toda falha observada implica que existe um defeito no software","Defeito e falha são exatamente o mesmo conceito"],
+answer:3,
+exp:"A INCORRETA é dizer que defeito e falha são o mesmo: defeito é a causa (no código); falha é o efeito observável. As demais são corretas — inclusive que um defeito pode nunca se manifestar."},
+
+{prova:"p1",topic:"Níveis de Teste",diff:"medium",type:"mc",
+text:"[1,0] Assinale a afirmação INCORRETA sobre os níveis de teste.",
+options:["O teste de unidade verifica as menores partes do software (métodos, classes) e costuma ser feito pelo desenvolvedor","O teste de integração foca nas interfaces e na comunicação entre componentes","O teste de unidade é de responsabilidade do cliente e ocorre em homologação","O teste de aceitação valida o sistema sob a ótica das necessidades do usuário"],
+answer:2,
+exp:"INCORRETA: o teste de UNIDADE é feito pelo DESENVOLVEDOR, não pelo cliente. Quem ocorre em homologação sob a ótica do cliente é o teste de ACEITAÇÃO. Trocar os papéis é a pegadinha."},
+
+{prova:"p1",topic:"Níveis de Teste",diff:"hard",type:"tf",
+text:"[1,6] Assinale V ou F sobre os níveis de teste e sua ordem.",
+statements:[
+{text:"A ordem usual dos níveis é: unidade → integração → sistema → aceitação.",answer:true},
+{text:"O teste de sistema avalia o software completo, de ponta a ponta, contra os requisitos.",answer:true},
+{text:"O teste de integração avalia o sistema completo do ponto de vista do usuário final.",answer:false},
+{text:"O teste de aceitação normalmente ocorre antes do teste de unidade.",answer:false}
+],
+exp:"Pegadinhas: integração testa INTERFACES entre componentes (não o sistema completo pela ótica do usuário — isso é sistema/aceitação). A aceitação é o ÚLTIMO nível, não o primeiro."},
+
+{prova:"p1",topic:"Tipos de Teste",diff:"medium",type:"tf",
+text:"[1,6] Assinale V ou F sobre tipos de teste (funcionais e não funcionais).",
+statements:[
+{text:"O teste funcional pode (e deve) ser aplicado em todos os níveis: unidade, integração, sistema e aceitação.",answer:true},
+{text:"O teste de desempenho (carga/estresse) é um teste funcional.",answer:false},
+{text:"O teste de regressão é um TIPO de teste, e não um nível de teste.",answer:true},
+{text:"O teste de usabilidade pode ser totalmente automatizado.",answer:false}
+],
+exp:"Pegadinhas: desempenho é NÃO funcional (avalia como, não o quê). Funcional aplica-se a todos os níveis. Regressão é um tipo (reexecução após mudanças), não um nível. Usabilidade exige avaliação humana."},
+
+{prova:"p1",topic:"Tipos de Teste",diff:"hard",type:"mc",
+text:"[1,0] Assinale a alternativa que apresenta APENAS testes não funcionais.",
+options:["Desempenho, segurança e usabilidade","Desempenho, regressão e unidade","Funcional, segurança e aceitação","Integração, usabilidade e sistema"],
+answer:0,
+exp:"Não funcionais avaliam COMO o sistema se comporta: desempenho, segurança, usabilidade, confiabilidade, portabilidade. Regressão é um tipo; unidade/integração/sistema/aceitação são NÍVEIS; funcional/aceitação tratam do QUÊ."},
+
+{prova:"p1",topic:"Padrão ISO/IEC 25010",diff:"medium",type:"mc",
+text:"[1,0] Assinale a associação INCORRETA entre subcaracterística e característica da ISO/IEC 25010.",
+options:["Coexistência → Compatibilidade","Tolerância a falhas → Confiabilidade","Segurança → Confiabilidade","Testabilidade → Manutenibilidade"],
+answer:2,
+exp:"INCORRETA: Segurança é uma CARACTERÍSTICA própria da ISO/IEC 25010 (com subcaracterísticas como Confidencialidade e Integridade), e não uma subcaracterística da Confiabilidade. As demais associações estão corretas."},
+
+{prova:"p1",topic:"Padrão ISO/IEC 25010",diff:"hard",type:"tf",
+text:"[1,6] Assinale V ou F sobre as características de qualidade da ISO/IEC 25010.",
+statements:[
+{text:"Eficiência de Desempenho considera comportamento temporal, utilização de recursos e capacidade.",answer:true},
+{text:"Interoperabilidade é uma subcaracterística da Usabilidade.",answer:false},
+{text:"Manutenibilidade inclui Modularidade, Reusabilidade, Analisabilidade, Modificabilidade e Testabilidade.",answer:true},
+{text:"Portabilidade inclui Adaptabilidade e Capacidade de ser instalado.",answer:true}
+],
+exp:"Pegadinha: Interoperabilidade pertence à COMPATIBILIDADE, não à Usabilidade. Eficiência de Desempenho não é só tempo — inclui recursos e capacidade."},
+
+{prova:"p1",topic:"Processo de Teste",diff:"medium",type:"mc",
+text:"[1,0] Sobre Verificação e Validação (V&V), assinale a alternativa CORRETA.",
+options:["Verificação responde 'estamos construindo o produto corretamente?'; Validação responde 'estamos construindo o produto certo?'","Verificação e Validação são sinônimos","Validação responde 'estamos construindo o produto corretamente?'; Verificação responde 'estamos construindo o produto certo?'","Verificação só pode ser feita executando o software"],
+answer:0,
+exp:"Pegadinha clássica: Verificação = conformidade com a especificação ('corretamente', geralmente sem executar — revisões). Validação = atende à necessidade real do usuário ('o produto certo', geralmente executando). Inverter as perguntas é o erro mais comum."},
+
+{prova:"p1",topic:"Estratégia e Dimensões",diff:"medium",type:"mc",
+text:"[1,0] Assinale a afirmação INCORRETA sobre as técnicas de caixa branca e caixa preta.",
+options:["No teste de caixa preta, o testador se baseia nas especificações/requisitos, sem conhecer o código interno","No teste de caixa branca, o testador NÃO tem acesso ao código-fonte","O teste de caixa branca (estrutural) baseia-se na estrutura interna do código","Caixa preta também é chamado de teste funcional"],
+answer:1,
+exp:"INCORRETA: na CAIXA BRANCA (estrutural) o testador CONHECE e usa o código interno. Quem NÃO acessa o código é a caixa PRETA (funcional). Trocar os dois é a pegadinha."},
+
+{prova:"p1",topic:"Processo de Teste",diff:"hard",type:"tf",
+text:"[1,6] Assinale V ou F sobre processo de teste, V&V e técnicas.",
+statements:[
+{text:"O teste de caixa preta baseia-se em requisitos/especificações, sem acesso ao código interno.",answer:true},
+{text:"A verificação preocupa-se em construir o produto de acordo com a especificação.",answer:true},
+{text:"A validação verifica se o produto atende às necessidades reais do usuário.",answer:true},
+{text:"Teste estrutural (caixa branca) ignora completamente a estrutura interna do código.",answer:false}
+],
+exp:"Pegadinha: caixa branca (estrutural) baseia-se justamente NA estrutura interna do código — o oposto da afirmação 4. Verificação = conformidade; Validação = adequação ao usuário."},
+
+{prova:"p1",topic:"Depuração",diff:"medium",type:"tf",
+text:"[1,6] Assinale V ou F sobre teste e depuração (debugging).",
+statements:[
+{text:"O teste revela a existência de falhas; a depuração localiza e corrige a causa (o defeito).",answer:true},
+{text:"Teste e depuração são exatamente a mesma atividade.",answer:false},
+{text:"A depuração costuma ser responsabilidade do desenvolvedor que corrige o defeito.",answer:true},
+{text:"Após corrigir um defeito, executar testes de regressão é desnecessário.",answer:false}
+],
+exp:"Pegadinhas: teste ≠ depuração (revelar vs. localizar/corrigir). Após a correção, a regressão é ESSENCIAL para garantir que nada foi quebrado."},
+
+{prova:"p1",topic:"Intro ao Teste",diff:"easy",type:"mc",
+text:"[1,0] Assinale a alternativa INCORRETA sobre testes de software.",
+options:["O objetivo do teste é revelar a presença de defeitos","Testar pode aumentar a confiança na qualidade do software","Um conjunto de testes bem-sucedido (sem falhas) prova que o software não tem defeitos","Testes não substituem outras práticas de qualidade, como revisões"],
+answer:2,
+exp:"INCORRETA: nenhum conjunto de testes prova a ausência de defeitos — apenas mostra que, para aqueles casos, não houve falha. É o 1º princípio do teste."}
 
 
 ]; // fim BANK
